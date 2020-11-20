@@ -118,6 +118,7 @@ class SessionManager {
             $stmt->execute();
             $result = $stmt->get_result();
             if($result->num_rows > 0) {
+                $conn->close();
                 return -1;
             }*/
             //Maybe the username is already in use
@@ -126,11 +127,28 @@ class SessionManager {
             $stmt->execute();
             $result = $stmt->get_result();
             if($result->num_rows > 0) {
+                $conn->close();
                 return -2;
             }*/
+            $conn->close();
             return -3;
         }
+        $conn->close();
         return 0;
+    }
+
+    public static function userCanDownload($idUser, $idBook) {
+        include_once "libSql.php";
+
+        $conn = getDbConnection();
+        $stmt = $conn->prepare("INSERT INTO users(email,username,password) VALUES (?,?,?)");
+        $stmt->bind_param("sss", $email, $username, $hashedPassword);
+        $success = $stmt->execute();
+        $result = $stmt->get_result();
+        if($result->num_rows > 0) {
+            return true;
+        }
+        return false;
     }
 
 }
