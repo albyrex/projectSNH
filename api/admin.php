@@ -8,7 +8,8 @@
 */
 
 include_once "sessionManager.php";
-include_once "libSql.php";
+include_once "dbAccess.php";
+include_once "utils.php"
 
 
 /**
@@ -26,34 +27,30 @@ if(!$DEBUG_MODE) {
     }
     // Check if user is an admin
     if(!SessionManager::isAdmin()) {
-        die("{\"errorCode\": -3, \"body\": \"User is not an admin\"}");
+        die("{\"errorCode\": -2, \"body\": \"User is not an admin\"}");
     }
 }
 
-if(!isset($_POST["function"]) || $_POST["function"] == "")
-    die("{\"errorCode\": -1, \"body\": \"Invalid request\"}");
-else if($_POST["function"] == "addBook")
+
+$function = checkPostParameterOrDie("function");
+if($function == "addBook")
     addBook();
+else if($function == "removeBook")
+    removeBook();
 else
-    die("{\"errorCode\": -1, \"body\": \"Invalid request\"}");
+    die("{\"errorCode\": -3, \"body\": \"Invalid request\"}");
 
-
-function checkPostParameter($parName) {
-    if(!isset($_POST[$parName]) || $_POST[$parName] == "")
-        die("{\"errorCode\": -1, \"body\": \"Invalid request\"}");
-    return $_POST[$parName];
-}
 
 /**
  * Add a new book
  */
 function addBook() {
-    $title = checkPostParameter("title");
-    $author = checkPostParameter("author");
-    $data = checkPostParameter("data");
-    $cover = checkPostParameter("cover");
-    $price = checkPostParameter("price");
-    $path = checkPostParameter("path");
+    $title = checkPostParameterOrDie("title");
+    $author = checkPostParameterOrDie("author");
+    $data = checkPostParameterOrDie("data");
+    $cover = checkPostParameterOrDie("cover");
+    $price = checkPostParameterOrDie("price");
+    $path = checkPostParameterOrDie("path");
 
     $result = new stdClass();
     $result->errorCode = 0;
@@ -72,6 +69,10 @@ function addBook() {
     $result->body = "Ok";
 
     echo json_encode($result);
+}
+
+function removeBook() {
+
 }
 
 ?>

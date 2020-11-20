@@ -11,7 +11,8 @@
 */
 
 include_once "sessionManager.php";
-include "libSql.php";
+include_once "dbAccess.php";
+include_once "utils.php"
 
 
 // Check if the user is already logged
@@ -20,20 +21,12 @@ if(SessionManager::isLogged()) {
 }
 
 // Check parameters
-if(!isset($_POST["email"]) || $_POST["email"] == "")
-    die("{\"errorCode\": -3, \"body\": \"Bad request (Missing email)\"}");
-else
-    $email = $_POST["email"];
-if(!isset($_POST["password"]) || $_POST["password"] == "")
-    die("{\"errorCode\": -3, \"body\": \"Bad request (Missing password)\"}");
-else
-    $password = $_POST["password"];
+$email = checkPostParameterOrDie("email");
+$password = checkPostParameterOrDie("password");
 
 $result = SessionManager::sessionStart($email, $password);
 
-if($result == $userNotFound) {
-    die("{\"errorCode\": -4, \"body\": \"Bad credentials\"}");
-} else if($result == $wrongPassword) {
+if($result == $userNotFound || $result == $wrongPassword) {
     die("{\"errorCode\": -4, \"body\": \"Bad credentials\"}");
 } else if($result == $loginSuccess) {
     if(SessionManager::isAdmin())

@@ -5,7 +5,7 @@
 */
 
 include_once "sessionManager.php";
-include_once "libSql.php";
+include_once "dbAccess.php";
 
 
 function getBookPath($idBook) {
@@ -21,7 +21,7 @@ function getBookPath($idBook) {
     if($result->num_rows > 0) {
         $row = $result->fetch_assoc();
         $conn->close();
-        return $row["path"];
+        return "../pdfs/" . $row["path"];
     } else {
         $conn->close();
         return -1;
@@ -35,8 +35,8 @@ if(!SessionManager::isLogged()) {
 }
 
 // Check parameters
-if(!isset($_POST["idBook"]) || $_POST["idBook"] == "" || !is_numeric($_POST["idBook"]))
-    die("{\"errorCode\": -3, \"body\": \"Bad request (Missing or non numeric idBook)\"}");
+if(!isset($_POST["idBook"]) || $_POST["idBook"] === "" || !is_numeric($_POST["idBook"]))
+    die("{\"errorCode\": -3, \"body\": \"Bad request (Missing or invalid idBook)\"}");
 else
     $idBook = $_POST["idBook"];
 

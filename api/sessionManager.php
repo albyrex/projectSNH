@@ -17,14 +17,14 @@ $userNotFound = -1;
 $wrongPassword = -2;
 $loginSuccess = 0;
 
-$passwordPreSalt = "euidh"
-$passwordPostSalt = "euiwhd"
+$passwordPreSalt = "euidh";
+$passwordPostSalt = "euiwhd";
 
 
 class SessionManager {
 
     public static function isLogged() {
-        return isset($_SESSION["name"]);
+        return isset($_SESSION["id_user"]);
     }
 
     public static function isAdmin() {
@@ -34,9 +34,11 @@ class SessionManager {
     }
 
     public static function hashPassword($password) {
+        global $passwordPreSalt, $passwordPostSalt;
+
         $hashedPassword = hash("sha256", $passwordPreSalt . $password . $passwordPostSalt);
         if($hashedPassword == false)
-            return "invalid hash"
+            return "invalid hash";
         else
             return $hashedPassword;
     }
@@ -44,7 +46,7 @@ class SessionManager {
     public static function sessionStart($email, $password) {
         global $userNotFound, $wrongPassword, $loginSuccess;
 
-        include_once "libSql.php";
+        include_once "dbAccess.php";
 
         $conn = getDbConnection();
         $stmt = $conn->prepare("SELECT * FROM users WHERE BINARY email=?");
@@ -60,7 +62,7 @@ class SessionManager {
             return $userNotFound;
         }
 
-        if($row["password"] === hashPassword($password)) {
+        if($row["password"] === SessionManager::hashPassword($password)) {
             if(session_status() == PHP_SESSION_NONE) {
                 session_start();
             }
@@ -101,14 +103,14 @@ class SessionManager {
         - -2 in case of failure if the username is already in use
         - -3 in other cases of failure
     */
-    public static function createUser($email, $username, $password) {
-        include_once "libSql.php";
+    public static function createUser($email, $username, $password, $answers) {
+        include_once "dbAccess.php";
 
-        $hashedPassword = hashPassword($password);
+        $hashedPassword = SessionManager::hashPassword($password);
 
         $conn = getDbConnection();
-        $stmt = $conn->prepare("INSERT INTO users(email,username,password) VALUES (?,?,?)");
-        $stmt->bind_param("sss", $email, $username, $hashedPassword);
+        $stmt = $conn->prepare("INSERT INTO users(email,username,password,answers) VALUES (?,?,?,?)");
+        $stmt->bind_param("ssss", $email, $username, $hashedPassword, $answers);
         $success = $stmt->execute();
         if($success === false) {
             //User creation failed. Let's discover why.
@@ -138,7 +140,7 @@ class SessionManager {
     }
 
     public static function userCanDownload($idUser, $idBook) {
-        include_once "libSql.php";
+        include_once "dbAccess.php";
 
         $conn = getDbConnection();
         $stmt = $conn->prepare("SELECT id_user FROM payments WHERE id_user=? AND id_book=?");
