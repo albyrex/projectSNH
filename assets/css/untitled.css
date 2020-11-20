@@ -1,0 +1,19 @@
+.button_price:hover !important {
+  background-color: rgb(0,123,255);
+  color: white;
+}
+
+.button_price:not(:disabled):not(.disabled) {
+  font-weight: bold;
+  overflow: hidden;
+}
+
+.button_price:hover {
+  color: white !important;
+  background: rgb(0,123,255) !important;
+}
+
+.d-inline-block.book {
+  padding: 50px;
+}
+
