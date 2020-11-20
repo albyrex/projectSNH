@@ -21,9 +21,6 @@ $passwordPreSalt = "euidh"
 $passwordPostSalt = "euiwhd"
 
 
-/*
-  Every parameter has to be already sanitized !!
-*/
 class SessionManager {
 
     public static function isLogged() {
@@ -116,26 +113,24 @@ class SessionManager {
         if($success === false) {
             //User creation failed. Let's discover why.
             //Maybe the email is already in use
-            $stmt = $conn->prepare("SELECT * FROM users WHERE BINARY email=?");
+            /*$stmt = $conn->prepare("SELECT * FROM users WHERE BINARY email=?");
             $stmt->bind_param("s", $email);
             $stmt->execute();
             $result = $stmt->get_result();
             if($result->num_rows > 0) {
                 return -1;
-            }
+            }*/
             //Maybe the username is already in use
-            $stmt = $conn->prepare("SELECT * FROM users WHERE BINARY username=?");
+            /*$stmt = $conn->prepare("SELECT * FROM users WHERE BINARY username=?");
             $stmt->bind_param("s", $username);
             $stmt->execute();
             $result = $stmt->get_result();
             if($result->num_rows > 0) {
                 return -2;
-            }
+            }*/
             return -3;
         }
         return 0;
-
-        $result = $stmt->get_result();
     }
 
 }

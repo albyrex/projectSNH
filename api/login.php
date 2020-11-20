@@ -21,11 +21,11 @@ if(SessionManager::isLogged()) {
 
 // Check parameters
 if(!isset($_POST["email"]) || $_POST["email"] == "")
-    die("{\"errorCode\": -3, \"body\": \"Bad request (Missing name)\"}");
+    die("{\"errorCode\": -3, \"body\": \"Bad request (Missing email)\"}");
 else
     $email = $_POST["email"];
 if(!isset($_POST["password"]) || $_POST["password"] == "")
-    die("{\"errorCode\": -3, \"body\": \"Bad request (Missing surname)\"}");
+    die("{\"errorCode\": -3, \"body\": \"Bad request (Missing password)\"}");
 else
     $password = $_POST["password"];
 
