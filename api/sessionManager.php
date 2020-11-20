@@ -141,8 +141,8 @@ class SessionManager {
         include_once "libSql.php";
 
         $conn = getDbConnection();
-        $stmt = $conn->prepare("INSERT INTO users(email,username,password) VALUES (?,?,?)");
-        $stmt->bind_param("sss", $email, $username, $hashedPassword);
+        $stmt = $conn->prepare("SELECT id_user FROM payments WHERE id_user=? AND id_book=?");
+        $stmt->bind_param("ii", $idUser, $idBook);
         $success = $stmt->execute();
         $result = $stmt->get_result();
         if($result->num_rows > 0) {

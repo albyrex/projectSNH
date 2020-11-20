@@ -30,8 +30,8 @@ function getBookPath($idBook) {
 
 
 // Check if the user is already logged
-if(SessionManager::isLogged()) {
-    die("{\"errorCode\": -2, \"body\": \"User is already logged\"}");
+if(!SessionManager::isLogged()) {
+    die("{\"errorCode\": -2, \"body\": \"User is not logged\"}");
 }
 
 // Check parameters
