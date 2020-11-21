@@ -14,6 +14,6 @@ if(!SessionManager::isLogged()) {
 
 SessionManager::closeSession();
 
-die("{\"errorCode\": 0, \"body\": \"done\"}");
+die("{\"errorCode\": 0, \"body\": \"Ok\"}");
 
 ?>

@@ -5,29 +5,31 @@
 */
 
 include_once "sessionManager.php";
+include_once "utils.php"
 
 
-// Check if the user is logged
-if(!SessionManager::isLogged()) {
-    die("{\"errorCode\": -2, \"body\": \"User is not logged\"}");
+// Check if the user is already logged
+if(SessionManager::isLogged()) {
+    die("{\"errorCode\": -2, \"body\": \"User is already logged\"}");
 }
 
 // Check parameters
-if(!isset($_POST["email"]) || $_POST["email"] == "")
-    die("{\"errorCode\": -3, \"body\": \"Bad request (Missing email)\"}");
-else
-    $email = $_POST["email"];
-if(!isset($_POST["username"]) || $_POST["username"] == "")
-    die("{\"errorCode\": -3, \"body\": \"Bad request (Missing username)\"}");
-else
-    $username = $_POST["username"];
-if(!isset($_POST["password"]) || $_POST["password"] == "")
-    die("{\"errorCode\": -3, \"body\": \"Bad request (Missing password)\"}");
-else
-    $password = $_POST["password"];
+$email = checkPostParameterOrDie("email");
+$username = checkPostParameterOrDie("username");
+$password = checkPostParameterOrDie("password");
+$answers = parseAnswers(checkPostParameterOrDie("answers"));
 
+// Check if username, email and answers are valid
+if(invalidUsername($username)) {
+    header("HTTP/1.0 400 Bad Request");
+    die("{\"errorCode\": -4, \"body\": \"Bad request: invalid username\"}");
+}
+if(invalidEmail($email)) {
+    header("HTTP/1.0 400 Bad Request");
+    die("{\"errorCode\": -5, \"body\": \"Bad request: invalid email\"}");
+}
 
-$success = SessionManager::createUser($email, $username, $password);
+$success = SessionManager::createUser($email, $username, $password, $answers);
 
 if($success != 0) {
     die("{\"errorCode\": -1, \"body\": \"Error. Email or username already in use\"}");
