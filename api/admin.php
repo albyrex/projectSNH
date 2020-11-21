@@ -35,10 +35,12 @@ if(!$DEBUG_MODE) {
 $function = checkPostParameterOrDie("function");
 if($function == "addBook")
     addBook();
-else if($function == "removeBook")
-    removeBook();
-else
-    die("{\"errorCode\": -3, \"body\": \"Invalid request\"}");
+else if($function == "removeBookById")
+    removeBookById();
+else {
+    header("HTTP/1.0 400 Bad Request");
+    die("{\"errorCode\": -400, \"body\": \"Bad request\"}");
+}
 
 
 /**
@@ -47,32 +49,93 @@ else
 function addBook() {
     $title = checkPostParameterOrDie("title");
     $author = checkPostParameterOrDie("author");
-    $data = checkPostParameterOrDie("data");
-    $cover = checkPostParameterOrDie("cover");
+    $data = checkPostParameterOrDie("date");
+    $abstract = checkPostParameterOrDie("abstract");
     $price = checkPostParameterOrDie("price");
-    $path = checkPostParameterOrDie("path");
+
+    //ATTENZIONE! Vanno sanificati title, author, abstract e price?
+    //ATTENZIONE! Da title si ricava il nome del pdf, quindi ocio che non deve
+    //essere una path
+
+    $targetFile = "../pdfs/$title.pdf";
+
+    if(
+        !isset($_FILES["cover"]["tmp_name"]) || $_FILES["cover"]["tmp_name"] == "" ||
+        !isset($_FILES["book"]["tmp_name"]) || $_FILES["book"]["tmp_name"] == ""
+    ) {
+        header("HTTP/1.0 400 Bad Request");
+        die("{\"errorCode\": -400, \"body\": \"Bad request\"}");
+    }
+
+    // Check if file already exists
+    if (file_exists($target_file)) {
+        header("HTTP/1.0 400 Bad Request");
+        die("{\"errorCode\": -400, \"body\": \"Bad request: file already exists\"}"); //Togliere!! E' solo a scopo di debug
+    }
+
+    // Check file size: max cover size = 512KiB, max book size = 128MiB
+    if ($_FILES["cover"]["size"] > 524288 || $_FILES["book"]["size"] > 134217728) {
+        header("HTTP/1.0 400 Bad Request");
+        die("{\"errorCode\": -400, \"body\": \"Bad request: file too large\"}");
+    }
+
+    $coverBase64 = getBase64FromFile($_FILES["cover"]["tmp_name"]);
 
     $result = new stdClass();
     $result->errorCode = 0;
 
     $conn = getDbConnection();
-    $stmt = $conn->prepare("INSERT INTO books(title,author,data,cover,price,path) VALUES (?,?,?,?,?,?)");
+    $stmt = $conn->prepare(
+        "INSERT INTO books(title,author,date,cover,abstract,price,path) VALUES (?,?,?,?,?,?,?)"
+    );
     $stmt->bind_param(
-        "ssssds", $title, $author, $data, $cover, $price, $path
+        "sssssds", $title, $author, $data, $coverBase64, $abstract, $price, $targetFile
     );
     $success = $stmt->execute();
     $conn->close();
     if($success === false) {
-        die("{\"errorCode\": -10, \"body\": \"Internal server error\"}");
+        header("HTTP/1.0 500 Internal Server Error");
+        die("{\"errorCode\": -500, \"body\": \"Internal server error\"}");
     }
+
+    move_uploaded_file($_FILES["book"]["tmp_name"], $targetFile);
 
     $result->body = "Ok";
 
     echo json_encode($result);
 }
 
-function removeBook() {
+function removeBookById() {
+    $idBook = checkPostNumericParameterOrDie("idBook");
 
+    $path = getBookPath($idBook);
+    if($path === -1) {
+        header("HTTP/1.0 400 Bad Request");
+        die("{\"errorCode\": -400, \"body\": \"Bad request\"}");
+    }
+
+    $conn = getDbConnection();
+    $stmt = $conn->prepare(
+        "DELETE FROM books WHERE id_book = ?"
+    );
+    $stmt->bind_param("i", $idBook);
+    $success = $stmt->execute();
+    $conn->close();
+    if($success === false) {
+        header("HTTP/1.0 500 Internal Server Error");
+        die("{\"errorCode\": -500, \"body\": \"Internal server error\"}");
+    }
+
+    die("{\"errorCode\": 0, \"body\": \"Ok\"}");
+}
+
+
+/*
+  Utility functions
+*/
+function getBase64FromFile($filepath) {
+    $imgbinary = fread(fopen($filepath, "r"), filesize($filepath));
+    return base64_encode($imgbinary);
 }
 
 ?>

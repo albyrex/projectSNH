@@ -1,13 +1,25 @@
 <?php
 
 /*
-  This page provides utility functions
+
+  Generic utility functions section
+
 */
 
 function checkPostParameterOrDie($parName) {
-    if(!isset($_POST[$parName]) || $_POST[$parName] == "")
-        die("{\"errorCode\": -3, \"body\": \"Invalid request\"}");
+    if(!isset($_POST[$parName]) || $_POST[$parName] == "") {
+        header("HTTP/1.0 400 Bad Request");
+        die("{\"errorCode\": -400, \"body\": \"Invalid request\"}");
+    }
     return $_POST[$parName];
+}
+
+function checkPostNumericParameterOrDie($parName) {
+    if(!isset($_POST[$parName]) || $_POST[$parName] == "" || !is_numeric($_POST[$parName])) {
+        header("HTTP/1.0 400 Bad Request");
+        die("{\"errorCode\": -400, \"body\": \"Invalid request\"}");
+    }
+    return (int)$_POST[$parName];
 }
 
 /*
@@ -40,8 +52,60 @@ function invalidEmail($email) {
     return (strpos($email, "@", $pos) != false);
 }
 
+
+
 /*
+
+  Other utility functions
+
+*/
+
+function getBookPath($idBook) {
+    $conn = getDbConnection();
+    $stmt = $conn->prepare("SELECT path FROM books WHERE id_book=?");
+    $stmt->bind_param("i", $idBook);
+    $success = $stmt->execute();
+    if($success === false){
+        $conn->close();
+        return -1;
+    }
+    $result = $stmt->get_result();
+    if($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $conn->close();
+        return "../pdfs/" . $row["path"];
+    } else {
+        $conn->close();
+        return -1;
+    }
+}
+
+function parseAnswers($answers) {
+    //json_decode(...) returns NULL if $answers is not a valid string
+    //representation for a json object. In this case the following if is
+    //"triggered".
+    $obj = json_decode(strtolower($answers));
+    if(count($obj) != 3) {
+        header("HTTP/1.0 400 Bad Request");
+        die("{\"errorCode\": -6, \"body\": \"Bad request: invalid answers\"}");
+    }
+    $arr = array();
+    for ($i = 0; $i < 3; $i++) {
+    	if(!is_string($obj[$i])) {
+            header("HTTP/1.0 400 Bad Request");
+            die("{\"errorCode\": -6, \"body\": \"Bad request: invalid answers\"}");
+        }
+    	array_push($arr,(string)$obj[$i]);
+    }
+    return json_encode($arr);
+}
+
+
+
+/*
+
   Vecchie funzioni. Rimuovere?
+
 */
 function filterHtml($string) {
     //Does not filter ' nor "

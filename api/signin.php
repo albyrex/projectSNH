@@ -17,18 +17,23 @@ if(SessionManager::isLogged()) {
 $email = checkPostParameterOrDie("email");
 $username = checkPostParameterOrDie("username");
 $password = checkPostParameterOrDie("password");
-$answers = checkPostParameterOrDie("answers");
+$answers = parseAnswers(checkPostParameterOrDie("answers"));
 
-// Check if username and email are valid
-if(invalidUsername($username))
-    die("{\"errorCode\": -4, \"body\": \"Invalid username\"}");
-if(invalidEmail($email))
-    die("{\"errorCode\": -4, \"body\": \"Invalid email\"}");
+// Check if username, email and answers are valid
+if(invalidUsername($username)) {
+    header("HTTP/1.0 400 Bad Request");
+    die("{\"errorCode\": -4, \"body\": \"Bad request: invalid username\"}");
+}
+if(invalidEmail($email)) {
+    header("HTTP/1.0 400 Bad Request");
+    die("{\"errorCode\": -5, \"body\": \"Bad request: invalid email\"}");
+}
 
 $success = SessionManager::createUser($email, $username, $password, $answers);
 
-if($success != 0)
+if($success != 0) {
     die("{\"errorCode\": -1, \"body\": \"Error. Email or username already in use\"}");
+}
 
 die("{\"errorCode\": 0, \"body\": \"Success\"}");
 
