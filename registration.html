@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Home - Brand</title>
+    <title>Contact Us - Brand</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i">
     <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
@@ -24,9 +24,9 @@
             <div
                 class="collapse navbar-collapse" id="navcol-1">
                 <ul class="nav navbar-nav d-xl-flex ml-auto align-items-xl-end" style="text-align: left;">
-                    <li class="nav-item" style="border-style: none;border-top-style: none;border-right-style: none;"><a class="nav-link active" href="#">Home</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="#">Search</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="#">about us</a></li>
+                    <li class="nav-item" style="border-style: none;border-top-style: none;border-right-style: none;"><a class="nav-link" href="#">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Search</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">about us</a></li>
                     <li class="nav-item dropdown show"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="true" href="#">ACCOUNT</a>
                         <div class="dropdown-menu show"><a class="dropdown-item" href="#profile">PROFILE</a><a class="dropdown-item" href="#logout">LOGOUT</a></div>
                     </li>
@@ -34,28 +34,22 @@
         </div>
         </div>
     </nav>
-    <main class="page landing-page">
-        <section class="clean-block clean-hero">
-            <div class="text" style="margin-top: 50px;">
-                <h2>Lorem ipsum dolor sit amet.</h2>
-            </div>
-        </section>
-        <section style="margin-top: 100px;">
+    <main class="page contact-us-page">
+        <section class="clean-block clean-form dark">
             <div class="container">
-                <div class="row" style="margin-top: 50px;">
-                    <div class="col"><span style="font-size: 20px;font-weight: bold;">Top Downloads</span></div>
+                <div class="block-heading">
+                    <h2 class="text-info">Sign up</h2>
                 </div>
-                <div class="row" style="margin-top: 20px;">
-                    <div class="col">
-                        <div class="d-inline-block book_list" style="border-style: none;">
-                            <div class="d-inline-block book" style="border-style: none;text-align: center;box-shadow: 0px 0px 3px;"><img class="img-fluid" style="width: 230px;height: 350px;min-width: 230px;" src="https://images-na.ssl-images-amazon.com/images/I/31ju+AtVjeL._SX310_BO1,204,203,200_.jpg">
-                                <div style="margin-top: 10px;"><span style="font-weight: bold;font-size: 20px;">The Martial</span></div>
-                                <div><span style="color: rgb(87,88,89);">author</span></div>
-                                <div style="margin-top: 20px;"><button class="btn btn-primary button_price" type="button" style="padding: 10px;width: 100%;text-align: center;border-color: rgb(0,123,255);background: rgb(255,255,255);color: rgb(0,123,255);">12.50 € - Add to cart</button></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <form>
+                    <div class="form-group"><label>Username</label><input class="form-control" type="text" name="username"></div>
+                    <div class="form-group"><label>Password</label><input class="form-control" type="password" name="password"></div>
+                    <div class="form-group"><label>Email</label><input class="form-control" type="email" name="email"></div>
+                    <div class="form-group form_group_sec"><label class="security_label">Security questions</label></div>
+                    <div class="form-group"><label>What is the first name of the person you first kissed?<br></label><input class="form-control" type="text" name="answer1"></div>
+                    <div class="form-group"><label>What is your favourite film?</label><input class="form-control" type="text" name="answer2"></div>
+                    <div class="form-group"><label>What is the name of your best friend in high school?</label><input class="form-control" type="text" name="answer3"></div>
+                    <div class="form-group form_group_button"><button class="btn btn-primary btn-block" type="submit">Sign up</button></div>
+                </form>
             </div>
         </section>
     </main>
