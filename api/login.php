@@ -12,7 +12,7 @@
 
 include_once "sessionManager.php";
 include_once "dbAccess.php";
-include_once "utils.php"
+include_once "utils.php";
 
 
 // Check if the user is already logged

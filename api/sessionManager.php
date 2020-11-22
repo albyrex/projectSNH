@@ -17,9 +17,6 @@ $userNotFound = -1;
 $wrongPassword = -2;
 $loginSuccess = 0;
 
-$passwordPreSalt = "euidh";
-$passwordPostSalt = "euiwhd";
-
 
 class SessionManager {
 
@@ -34,9 +31,7 @@ class SessionManager {
     }
 
     public static function hashPassword($password) {
-        global $passwordPreSalt, $passwordPostSalt;
-
-        $hashedPassword = hash("sha256", $passwordPreSalt . $password . $passwordPostSalt);
+        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
         if($hashedPassword == false)
             return "invalid hash";
         else
@@ -62,7 +57,7 @@ class SessionManager {
             return $userNotFound;
         }
 
-        if($row["password"] === SessionManager::hashPassword($password)) {
+        if(password_verify($password, $row["password"])) {
             if(session_status() == PHP_SESSION_NONE) {
                 session_start();
             }
