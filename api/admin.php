@@ -85,6 +85,7 @@ function addBook() {
     $result->errorCode = 0;
 
     $conn = getDbConnection();
+    $conn->query("SET CHARACTER SET utf8");
     $stmt = $conn->prepare(
         "INSERT INTO books(title,author,date,cover,abstract,price,path) VALUES (?,?,?,?,?,?,?)"
     );

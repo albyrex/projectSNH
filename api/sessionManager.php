@@ -44,6 +44,7 @@ class SessionManager {
         include_once "dbAccess.php";
 
         $conn = getDbConnection();
+        $conn->query("SET CHARACTER SET utf8");
         $stmt = $conn->prepare("SELECT * FROM users WHERE BINARY email=?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
@@ -104,6 +105,7 @@ class SessionManager {
         $hashedPassword = SessionManager::hashPassword($password);
 
         $conn = getDbConnection();
+        $conn->query("SET CHARACTER SET utf8");
         $stmt = $conn->prepare("INSERT INTO users(email,username,password,answers) VALUES (?,?,?,?)");
         $stmt->bind_param("ssss", $email, $username, $hashedPassword, $answers);
         $success = $stmt->execute();
@@ -138,6 +140,7 @@ class SessionManager {
         include_once "dbAccess.php";
 
         $conn = getDbConnection();
+        $conn->query("SET CHARACTER SET utf8");
         $stmt = $conn->prepare("SELECT id_user FROM payments WHERE id_user=? AND id_book=?");
         $stmt->bind_param("ii", $idUser, $idBook);
         $success = $stmt->execute();
