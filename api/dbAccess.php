@@ -15,6 +15,7 @@ function getDbConnection() {
         "",                   //DBMS user password
         "my_cappelliniserver" //DB name
     );
+    $conn->set_charset("utf8");
     // Check connection
     if($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);

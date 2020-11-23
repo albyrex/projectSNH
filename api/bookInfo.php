@@ -45,7 +45,6 @@ function topDownloaded() {
     $result->body->bookList = array();
 
     $conn = getDbConnection();
-    $conn->query("SET CHARACTER SET utf8");
     $r = $conn->query(
         "SELECT b.id_book, title, author, date, cover, abstract, price, COUNT(p.id_user) AS downloadCount
         FROM books b LEFT OUTER JOIN payments p ON (b.id_book = p.id_book)
@@ -69,7 +68,6 @@ function getBookById() {
     $result->body = new stdClass();
 
     $conn = getDbConnection();
-    $conn->query("SET CHARACTER SET utf8");
     $stmt = $conn->prepare(
         "SELECT * FROM books WHERE id_book = ?"
     );
@@ -101,7 +99,6 @@ function getBooksByIdUser() {
     $result->body->bookList = array();
 
     $conn = getDbConnection();
-    $conn->query("SET CHARACTER SET utf8");
     $stmt = $conn->prepare(
         "SELECT b.* FROM books b NATURAL JOIN payments WHERE id_user = ?"
     );
@@ -140,7 +137,6 @@ function searchByTitleOrAuthor() {
     $result->body->bookList = array();
 
     $conn = getDbConnection();
-    $conn->query("SET CHARACTER SET utf8");
     $stmt = $conn->prepare(
         "SELECT id_book, title, author, date, cover, abstract, price
         FROM books
