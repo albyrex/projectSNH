@@ -7,18 +7,21 @@
     <title>Home - Brand</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i">
-    <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
     <link rel="stylesheet" href="assets/fonts/line-awesome.min.css">
     <link rel="stylesheet" href="assets/fonts/simple-line-icons.min.css">
     <link rel="stylesheet" href="assets/css/dh-card-image-left-dark.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css">
     <link rel="stylesheet" href="assets/css/Navigation-with-Search.css">
     <link rel="stylesheet" href="assets/css/Rounded-Button.css">
+    <link rel="stylesheet" href="assets/css/Rounded-Search-Input-field-1.css">
+    <link rel="stylesheet" href="assets/css/Rounded-Search-Input-field.css">
+    <link rel="stylesheet" href="assets/css/Search-Input-Responsive-with-Icon.css">
     <link rel="stylesheet" href="assets/css/Search-Input-responsive.css">
     <link rel="stylesheet" href="assets/css/untitled.css">
 </head>
 
-<body>
+<body style="background: rgb(246,246,246);">
     <nav class="navbar navbar-light navbar-expand-lg fixed-top bg-white clean-navbar">
         <div class="container"><i class="la la-book" style="font-size: 50px;"></i><a class="navbar-brand logo" href="#">BOOKSHOP</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
             <div
@@ -27,31 +30,65 @@
                     <li class="nav-item" style="border-style: none;border-top-style: none;border-right-style: none;"><a class="nav-link active" href="#">Home</a></li>
                     <li class="nav-item"><a class="nav-link active" href="#">Search</a></li>
                     <li class="nav-item"><a class="nav-link active" href="#">about us</a></li>
-                    <li class="nav-item dropdown show"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="true" href="#">ACCOUNT</a>
-                        <div class="dropdown-menu show"><a class="dropdown-item" href="#profile">PROFILE</a><a class="dropdown-item" href="#logout">LOGOUT</a></div>
+                    <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">ACCOUNT</a>
+                        <div class="dropdown-menu"><a class="dropdown-item" href="#profile">PROFILE</a><a class="dropdown-item" href="#logout">LOGOUT</a></div>
                     </li>
                 </ul>
         </div>
         </div>
     </nav>
     <main class="page landing-page">
-        <section class="clean-block clean-hero">
-            <div class="text" style="margin-top: 50px;">
-                <h2>Lorem ipsum dolor sit amet.</h2>
+        <section class="clean-block clean-hero section_search">
+            <div class="text heading_search" style="margin-top: 50px;">
+                <h2 class="heading_search">Search by title or author</h2>
+            </div>
+            <div class="row search_row" style="margin: 0px;max-width: 900px;width: 70%;position: absolute;z-index: 2;bottom: 20px;">
+                <div class="col">
+                    <div class="card m-auto">
+                        <div class="card-body" style="width: 100%;">
+                            <form class="d-flex align-items-center"><i class="fas fa-search d-none d-sm-block h4 text-body m-0"></i><input class="border rounded form-control flex-shrink-1 form-control-borderless" type="search" placeholder="Search by Title or Author" name="searchbar"></form>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
         <section style="margin-top: 100px;">
             <div class="container">
                 <div class="row" style="margin-top: 50px;">
-                    <div class="col"><span style="font-size: 20px;font-weight: bold;">Top Downloads</span></div>
+                    <div class="col" style="background: transparent;"><span style="font-size: 20px;font-weight: bold;">Top Downloads</span></div>
                 </div>
                 <div class="row" style="margin-top: 20px;">
-                    <div class="col">
+                    <div class="col" style="background: transparent;">
                         <div class="d-inline-block book_list" style="border-style: none;">
-                            <div class="d-inline-block book" style="border-style: none;text-align: center;box-shadow: 0px 0px 3px;"><img class="img-fluid" style="width: 230px;height: 350px;min-width: 230px;" src="https://images-na.ssl-images-amazon.com/images/I/31ju+AtVjeL._SX310_BO1,204,203,200_.jpg">
-                                <div style="margin-top: 10px;"><span style="font-weight: bold;font-size: 20px;">The Martial</span></div>
-                                <div><span style="color: rgb(87,88,89);">author</span></div>
-                                <div style="margin-top: 20px;"><button class="btn btn-primary button_price" type="button" style="padding: 10px;width: 100%;text-align: center;border-color: rgb(0,123,255);background: rgb(255,255,255);color: rgb(0,123,255);">12.50 € - Add to cart</button></div>
+                            <div class="d-inline-block book" style="border-style: none;text-align: center;padding-right: 0px;padding-left: 0px;margin-right: 30px;">
+                                <div class="div_cover" style="width: 220px;height: 328px;background: url(&quot;https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQ72nP9L35YjnlLe4V8iwFO1UGLpCjcafMqw&amp;usqp=CAU&quot;) center / cover no-repeat;box-shadow: 1px 1px 10px;"></div>
+                                <div style="margin-top: 10px;text-align: left;"><span style="font-weight: bold;font-size: 20px;">The Martial</span></div>
+                                <div style="text-align: left;"><span style="color: rgb(87,88,89);">author</span></div>
+                                <div style="margin-top: 20px;text-align: left;"><button class="btn btn-primary button_price" type="button" style="text-align: center;border-color: rgb(0,123,255);background: rgb(255,255,255);color: rgb(0,123,255);padding: 10px;min-height: 0px;">12.50 €</button></div>
+                            </div>
+                            <div class="d-inline-block book" style="border-style: none;text-align: center;padding-right: 0px;padding-left: 0px;margin-right: 30px;">
+                                <div class="div_cover" style="width: 220px;height: 328px;background: url(&quot;https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQ72nP9L35YjnlLe4V8iwFO1UGLpCjcafMqw&amp;usqp=CAU&quot;) center / cover no-repeat;box-shadow: 1px 1px 10px;"></div>
+                                <div style="margin-top: 10px;text-align: left;"><span style="font-weight: bold;font-size: 20px;">The Martial</span></div>
+                                <div style="text-align: left;"><span style="color: rgb(87,88,89);">author</span></div>
+                                <div style="margin-top: 20px;text-align: left;"><button class="btn btn-primary button_price" type="button" style="text-align: center;border-color: rgb(0,123,255);background: rgb(255,255,255);color: rgb(0,123,255);padding: 10px;min-height: 0px;">12.50 €</button></div>
+                            </div>
+                            <div class="d-inline-block book" style="border-style: none;text-align: center;padding-right: 0px;padding-left: 0px;margin-right: 30px;">
+                                <div class="div_cover" style="width: 220px;height: 328px;background: url(&quot;https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQ72nP9L35YjnlLe4V8iwFO1UGLpCjcafMqw&amp;usqp=CAU&quot;) center / cover no-repeat;box-shadow: 1px 1px 10px;"></div>
+                                <div style="margin-top: 10px;text-align: left;"><span style="font-weight: bold;font-size: 20px;">The Martial</span></div>
+                                <div style="text-align: left;"><span style="color: rgb(87,88,89);">author</span></div>
+                                <div style="margin-top: 20px;text-align: left;"><button class="btn btn-primary button_price" type="button" style="text-align: center;border-color: rgb(0,123,255);background: rgb(255,255,255);color: rgb(0,123,255);padding: 10px;min-height: 0px;">12.50 €</button></div>
+                            </div>
+                            <div class="d-inline-block book" style="border-style: none;text-align: center;padding-right: 0px;padding-left: 0px;margin-right: 30px;">
+                                <div class="div_cover" style="width: 220px;height: 328px;background: url(&quot;https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQ72nP9L35YjnlLe4V8iwFO1UGLpCjcafMqw&amp;usqp=CAU&quot;) center / cover no-repeat;box-shadow: 1px 1px 10px;"></div>
+                                <div style="margin-top: 10px;text-align: left;"><span style="font-weight: bold;font-size: 20px;">The Martial</span></div>
+                                <div style="text-align: left;"><span style="color: rgb(87,88,89);">author</span></div>
+                                <div style="margin-top: 20px;text-align: left;"><button class="btn btn-primary button_price" type="button" style="text-align: center;border-color: rgb(0,123,255);background: rgb(255,255,255);color: rgb(0,123,255);padding: 10px;min-height: 0px;">12.50 €</button></div>
+                            </div>
+                            <div class="d-inline-block book" style="border-style: none;text-align: center;padding-right: 0px;padding-left: 0px;margin-right: 30px;">
+                                <div class="div_cover" style="width: 220px;height: 328px;background: url(&quot;https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQ72nP9L35YjnlLe4V8iwFO1UGLpCjcafMqw&amp;usqp=CAU&quot;) center / cover no-repeat;box-shadow: 1px 1px 10px;"></div>
+                                <div style="margin-top: 10px;text-align: left;"><span style="font-weight: bold;font-size: 20px;">The Martial</span></div>
+                                <div style="text-align: left;"><span style="color: rgb(87,88,89);">author</span></div>
+                                <div style="margin-top: 20px;text-align: left;"><button class="btn btn-primary button_price" type="button" style="text-align: center;border-color: rgb(0,123,255);background: rgb(255,255,255);color: rgb(0,123,255);padding: 10px;min-height: 0px;">12.50 €</button></div>
                             </div>
                         </div>
                     </div>
@@ -62,36 +99,18 @@
     <footer class="page-footer dark" style="margin-top: 100px;">
         <div class="container">
             <div class="row">
-                <div class="col-sm-3">
+                <div class="col-sm-3" style="width: 50%;min-width: 50%;max-width: 50%;">
                     <h5>Get started</h5>
                     <ul>
                         <li><a href="#">Home</a></li>
                         <li><a href="#">Sign up</a></li>
-                        <li><a href="#">Downloads</a></li>
                     </ul>
                 </div>
-                <div class="col-sm-3">
+                <div class="col-sm-3" style="width: 50%;min-width: 50%;max-width: 50%;">
                     <h5>About us</h5>
                     <ul>
                         <li><a href="#">Company Information</a></li>
-                        <li><a href="#">Contact us</a></li>
-                        <li><a href="#">Reviews</a></li>
-                    </ul>
-                </div>
-                <div class="col-sm-3">
-                    <h5>Support</h5>
-                    <ul>
-                        <li><a href="#">FAQ</a></li>
-                        <li><a href="#">Help desk</a></li>
-                        <li><a href="#">Forums</a></li>
-                    </ul>
-                </div>
-                <div class="col-sm-3">
-                    <h5>Legal</h5>
-                    <ul>
-                        <li><a href="#">Terms of Service</a></li>
-                        <li><a href="#">Terms of Use</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">About us</a></li>
                     </ul>
                 </div>
             </div>

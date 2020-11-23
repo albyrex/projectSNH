@@ -7,13 +7,16 @@
     <title>About Us - Brand</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i">
-    <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
     <link rel="stylesheet" href="assets/fonts/line-awesome.min.css">
     <link rel="stylesheet" href="assets/fonts/simple-line-icons.min.css">
     <link rel="stylesheet" href="assets/css/dh-card-image-left-dark.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css">
     <link rel="stylesheet" href="assets/css/Navigation-with-Search.css">
     <link rel="stylesheet" href="assets/css/Rounded-Button.css">
+    <link rel="stylesheet" href="assets/css/Rounded-Search-Input-field-1.css">
+    <link rel="stylesheet" href="assets/css/Rounded-Search-Input-field.css">
+    <link rel="stylesheet" href="assets/css/Search-Input-Responsive-with-Icon.css">
     <link rel="stylesheet" href="assets/css/Search-Input-responsive.css">
     <link rel="stylesheet" href="assets/css/untitled.css">
 </head>
@@ -27,8 +30,8 @@
                     <li class="nav-item" style="border-style: none;border-top-style: none;border-right-style: none;"><a class="nav-link" href="#">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Search</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">about us</a></li>
-                    <li class="nav-item dropdown show"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="true" href="#">ACCOUNT</a>
-                        <div class="dropdown-menu show"><a class="dropdown-item" href="#profile">PROFILE</a><a class="dropdown-item" href="#logout">LOGOUT</a></div>
+                    <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">ACCOUNT</a>
+                        <div class="dropdown-menu"><a class="dropdown-item" href="#profile">PROFILE</a><a class="dropdown-item" href="#logout">LOGOUT</a></div>
                     </li>
                 </ul>
         </div>
@@ -48,31 +51,37 @@
                                 <thead>
                                     <tr style="text-align: center;">
                                         <th>ITEMS</th>
-                                        <th>PRICE</th>
+                                        <th style="text-align: left;">PRICE</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
+                                    <tr style="border-bottom-style: none;">
                                         <td style="text-align: right;max-height: 300px;">
-                                            <div class="row" style="max-height: 300px;">
-                                                <div class="col">
-                                                    <div><img class="img-fluid" src="https://edit.org/images/cat/book-covers-big-2019101610.jpg"></div>
+                                            <div class="row" style="max-height: 300px;margin-bottom: 20px;">
+                                                <div class="col" style="padding-left: 10px;padding-right: 0px;max-width: 250px;">
+                                                    <div class="cover_img" style="width: 220px;height: 328px;background: url(&quot;https://edit.org/images/cat/book-covers-big-2019101610.jpg&quot;) center / contain;box-shadow: 1px 1px 10px;"></div>
                                                 </div>
-                                                <div class="col">
-                                                    <div><span>Text</span></div>
-                                                    <div><span>Text</span></div>
+                                                <div class="col col_2" style="text-align: left;">
+                                                    <div style="margin-bottom: 10px;"><span class="title" style="font-size: 20px;">My Book sdgffgsgsgdfgsyvsry</span></div>
+                                                    <div><span class="author">Andy weir asdsadfv</span></div>
                                                 </div>
                                             </div>
                                         </td>
+                                        <td>
+                                            <div class="row" style="margin-left: 0px;margin-right: 0px;">
+                                                <div class="col col_price" style="text-align: left;font-size: 16px;padding-top: 150px;padding-left: 0px;padding-right: 0px;min-width: 95px;"><span class="span_price" style="min-width: 63px;">12.30 €</span><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" class="bi bi-x" style="font-size: 33px;color: rgb(120,120,120);">
+  <path fill-rule="evenodd" d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"></path>
+</svg></div>
+                                            </div>
+                                        </td>
                                     </tr>
-                                    <tr></tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
                 <div class="row" style="margin-top: 100px;">
-                    <div class="col col_price" style="margin-left: 60%;">
+                    <div class="col">
                         <div class="table-responsive">
                             <table class="table">
                                 <thead>
@@ -100,36 +109,18 @@
     <footer class="page-footer dark" style="margin-top: 100px;">
         <div class="container">
             <div class="row">
-                <div class="col-sm-3">
+                <div class="col-sm-3" style="width: 50%;min-width: 50%;max-width: 50%;">
                     <h5>Get started</h5>
                     <ul>
                         <li><a href="#">Home</a></li>
                         <li><a href="#">Sign up</a></li>
-                        <li><a href="#">Downloads</a></li>
                     </ul>
                 </div>
-                <div class="col-sm-3">
+                <div class="col-sm-3" style="width: 50%;min-width: 50%;max-width: 50%;">
                     <h5>About us</h5>
                     <ul>
                         <li><a href="#">Company Information</a></li>
-                        <li><a href="#">Contact us</a></li>
-                        <li><a href="#">Reviews</a></li>
-                    </ul>
-                </div>
-                <div class="col-sm-3">
-                    <h5>Support</h5>
-                    <ul>
-                        <li><a href="#">FAQ</a></li>
-                        <li><a href="#">Help desk</a></li>
-                        <li><a href="#">Forums</a></li>
-                    </ul>
-                </div>
-                <div class="col-sm-3">
-                    <h5>Legal</h5>
-                    <ul>
-                        <li><a href="#">Terms of Service</a></li>
-                        <li><a href="#">Terms of Use</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">About us</a></li>
                     </ul>
                 </div>
             </div>
