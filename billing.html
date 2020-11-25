@@ -43,11 +43,14 @@
         <section class="clean-block clean-form dark">
             <div class="container">
                 <div class="block-heading">
-                    <h2 class="text-info">Password Recovery</h2>
-                </div>
+                    <h2 class="text-info">Billing</h2><span id="total" class="total">TOTAL: 12.30 €</span></div>
                 <form>
-                    <div class="form-group"><label>Email</label><input class="form-control" type="email" id="email" name="email"></div>
-                    <div class="form-group form_group_button"><button class="btn btn-primary btn-block" id="button_login" type="submit">Login</button></div>
+                    <div class="form-group"><label>NAME ON CARD</label><input class="form-control" type="email" id="name" name="email"></div>
+                    <div class="form-group d-inline-block" style="width: 50%;"><label>CARD NUMBER</label><input class="form-control" type="number" id="cardnumber"></div>
+                    <div class="form-group d-inline-block float-right" style="width: 30%;"><label>CVV</label><input class="form-control" type="number" id="cvv"></div>
+                    <div class="form-group d-inline-block" style="width: 50%;"><label>MONTH</label><input class="form-control" type="month"></div>
+                    <div class="form-group d-inline-block float-right" style="width: 30%;"><label>YEAR</label><input class="form-control" type="month"></div>
+                    <div class="form-group form_group_button"><button class="add">PROCESS CHECKOUT</button></div>
                 </form>
             </div>
         </section>

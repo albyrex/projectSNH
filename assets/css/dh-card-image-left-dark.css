@@ -183,3 +183,13 @@ div {
   }
 }
 
+#total {
+  font-weight: bold;
+  font-size: larger;
+}
+
+.section_search {
+  /*position: absolute;*/
+  z-index: 1;
+}
+
