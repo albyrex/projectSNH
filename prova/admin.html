@@ -31,19 +31,25 @@
 		<a href="profile.html">Profile</a>
 	</div>
 	<br><br><br><br>
-    <form>
+    <form action="/api/admin.php" method="post">>
 	  <label for="title">TITLE</label><br>
 	  <input type="text" id="title" name="title"><br>
 	  <label for="author">AUTHOR</label><br>
 	  <input type="text" id="author" name="author"><br>
 	  <label for="price">PRICE</label><br>
 	  <input type="number" id="price" name="price"><br>
-	  <button id="button_add">ADD</button>
+	  <label for="pdf">PDF</label><br>
+	  <input type="file" id="pdf" name="pdf"><br>
+	  <br>
+	  <input type="submit" value="Submit">
+	  <input type="text" value="addBook" id="function" style="display:none">
 	</form>
 	
 	
 	
-	<br><br><br><br><br><br><br>
+	<br><br><br><br><br><br>
+	<input type="text" id="search" placeholder="search by title or author">
+	<br>
 	
 	<div>
 		<table id="booklist" style="width:500px; border: 1px solid black;">
@@ -52,14 +58,6 @@
 			<th>Author</th>
 			<th>Price</th>
 			<th>Action</th>
-		  </tr>
-		  <tr>
-			<td>AAA</td>
-			<td>BBB</td>
-			<td>50</td>
-			<td>
-				<button>REMOVE</button>
-			</td>
 		  </tr>
 		</table>
 	</div>
