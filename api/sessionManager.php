@@ -95,8 +95,6 @@ class SessionManager {
       Returns:
         - 0 in case of sucess
         - -1 in case of failure if the email is already in use
-        - -2 in case of failure if the username is already in use
-        - -3 in other cases of failure
     */
     public static function createUser($email, $username, $password, $answers) {
         include_once "dbAccess.php";
@@ -107,30 +105,10 @@ class SessionManager {
         $stmt = $conn->prepare("INSERT INTO users(email,username,password,answers) VALUES (?,?,?,?)");
         $stmt->bind_param("ssss", $email, $username, $hashedPassword, $answers);
         $success = $stmt->execute();
-        if($success === false) {
-            //User creation failed. Let's discover why.
-            //Maybe the email is already in use
-            /*$stmt = $conn->prepare("SELECT * FROM users WHERE BINARY email=?");
-            $stmt->bind_param("s", $email);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if($result->num_rows > 0) {
-                $conn->close();
-                return -1;
-            }*/
-            //Maybe the username is already in use
-            /*$stmt = $conn->prepare("SELECT * FROM users WHERE BINARY username=?");
-            $stmt->bind_param("s", $username);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if($result->num_rows > 0) {
-                $conn->close();
-                return -2;
-            }*/
-            $conn->close();
-            return -3;
-        }
         $conn->close();
+        if($success === false) {
+            return -1;
+        }
         return 0;
     }
 

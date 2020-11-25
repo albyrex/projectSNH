@@ -22,6 +22,22 @@ function checkPostNumericParameterOrDie($parName) {
     return (int)$_POST[$parName];
 }
 
+function checkGetParameterOrDie($parName) {
+    if(!isset($_GET[$parName]) || $_GET[$parName] == "") {
+        header("HTTP/1.0 400 Bad Request");
+        die("{\"errorCode\": -400, \"body\": \"Invalid request\"}");
+    }
+    return $_GET[$parName];
+}
+
+function checkGetNumericParameterOrDie($parName) {
+    if(!isset($_GET[$parName]) || $_GET[$parName] == "" || !is_numeric($_GET[$parName])) {
+        header("HTTP/1.0 400 Bad Request");
+        die("{\"errorCode\": -400, \"body\": \"Invalid request\"}");
+    }
+    return (int)$_GET[$parName];
+}
+
 /*
   If $username contains at leats a character not in the whitelist \w, this
   function return true.

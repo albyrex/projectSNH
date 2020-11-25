@@ -15,7 +15,7 @@ if(!SessionManager::isLogged()) {
 }
 
 // Check parameters
-$idBook = checkPostNumericParameterOrDie("idBook");
+$idBook = checkGetNumericParameterOrDie("idBook");
 
 if(SessionManager::userCanDownload(SessionManager::getIdUser(),$idBook) === false) {
     header('HTTP/1.0 403 Forbidden');
