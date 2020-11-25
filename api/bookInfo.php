@@ -4,7 +4,7 @@
   Functions:
     - topDownloaded -> return the $TOP_DOWNLOADED_SIZE top most downloaded books
     - getBookById -> get a book specifying its id_book
-    - getBooksByIdUser -> retrieve all books bought by the currently logged user
+    - getUserBooks -> retrieve all books bought by the currently logged user
     - searchByTitleOrAuthor -> retrieve the books whose title or author matches
           the search criteria. Maximum number of results: $SEARCH_RESULT_MAX_SIZE
 */
@@ -28,13 +28,13 @@ if($function == "topDownloaded")
     topDownloaded();
 else if($function == "getBookById")
     getBookById();
-else if($function == "getBooksByIdUser")
-    getBooksByIdUser();
+else if($function == "getUserBooks")
+    getUserBooks();
 else if($function == "searchByTitleOrAuthor")
     searchByTitleOrAuthor();
 else {
     header("HTTP/1.0 400 Bad Request");
-    die("{\"errorCode\": -400, \"body\": \"Invalid request\"}");
+    die("{\"errorCode\": -400, \"body\": \"Bad request\"}");
 }
 
 
@@ -62,12 +62,15 @@ function topDownloaded() {
 
 function getBookById() {
     $idBook = checkPostNumericParameterOrDie("idBook");
+    $idUser = SessionManager::getIdUser();
 
     $result = new stdClass();
     $result->errorCode = 0;
     $result->body = new stdClass();
 
     $conn = getDbConnection();
+
+    //Retrieve the book
     $stmt = $conn->prepare(
         "SELECT * FROM books WHERE id_book = ?"
     );
@@ -82,15 +85,33 @@ function getBookById() {
         $row = $r->fetch_assoc();
         $result->body->book = $row;
     } else {
-        header("HTTP/1.0 404 Not Found");
-        die("{\"errorCode\": -404, \"body\": \"Book not found\"}");
+        header("HTTP/1.0 400 Bad Request");
+        die("{\"errorCode\": -400, \"body\": \"Bad request\"}");
     }
+
+    //Can i buy it?
+    $stmt = $conn->prepare(
+        "SELECT * FROM payments WHERE id_book = ? AND id_user = ?"
+    );
+    $stmt->bind_param("ii", $idBook, $idUser);
+    $success = $stmt->execute();
+    if($success === false) {
+        header("HTTP/1.0 500 Internal Server Error");
+        die("{\"errorCode\": -500, \"body\": \"Internal server error\"}");
+    }
+    $r = $stmt->get_result();
+    if($r->num_rows > 0) {
+        $result->body->icanbuy = 0;
+    } else {
+        $result->body->icanbuy = 1;
+    }
+
     $conn->close();
 
     echo json_encode($result);
 }
 
-function getBooksByIdUser() {
+function getUserBooks() {
     $idUser = SessionManager::getIdUser();
 
     $result = new stdClass();
@@ -122,12 +143,12 @@ function searchByTitleOrAuthor() {
 
     if(strlen($searchString) < 3) {
         header("HTTP/1.0 400 Bad Request");
-        die("{\"errorCode\": -400, \"body\": \"Invalid request: too short search string\"}");
+        die("{\"errorCode\": -400, \"body\": \"Bad request: too short search string\"}");
     }
 
     if(preg_match('/(%|__)/', $searchString)) {
         header("HTTP/1.0 400 Bad Request");
-        die("{\"errorCode\": -400, \"body\": \"Invalid request\"}");
+        die("{\"errorCode\": -400, \"body\": \"Bad request\"}");
     }
     $searchString = "%$searchString%";
 
