@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>ADMIN</title>
+	<style>
+		table {
+		  font-family: arial, sans-serif;
+		  border-collapse: collapse;
+		  width: 100%;
+		}
+
+		td, th {
+		  border: 1px solid #dddddd;
+		  text-align: left;
+		  padding: 8px;
+		}
+
+		tr:nth-child(even) {
+		  background-color: #dddddd;
+		}
+	</style>
+</head>
+
+<body>
+	<h1>ADMIN</h1>
+	<div id="navbar">
+		<a href="index.html">Home</a>
+		<a href="profile.html">Profile</a>
+	</div>
+	<br><br><br><br>
+    <form>
+	  <label for="title">TITLE</label><br>
+	  <input type="text" id="title" name="title"><br>
+	  <label for="author">AUTHOR</label><br>
+	  <input type="text" id="author" name="author"><br>
+	  <label for="price">PRICE</label><br>
+	  <input type="number" id="price" name="price"><br>
+	  <button id="button_add">ADD</button>
+	</form>
+	
+	
+	
+	<br><br><br><br><br><br><br>
+	
+	<div>
+		<table id="booklist" style="width:500px; border: 1px solid black;">
+		  <tr>
+			<th>Title</th>
+			<th>Author</th>
+			<th>Price</th>
+			<th>Action</th>
+		  </tr>
+		  <tr>
+			<td>AAA</td>
+			<td>BBB</td>
+			<td>50</td>
+			<td>
+				<button>REMOVE</button>
+			</td>
+		  </tr>
+		</table>
+	</div>
+	
+	
+</body>
+
+</html>
