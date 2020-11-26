@@ -41,6 +41,8 @@ function populateBookDownload(responseText) {
 	
 	let listbook = response.body.bookList;
 	
+	clearTable(booklistdownload);
+	
 	for (var i = 0; i < listbook.length; ++i) {
 		var x = document.createElement("tr"); 
 		var t = document.createElement("td"); 
@@ -71,4 +73,12 @@ function logout() {
 	doAjaxPost("api/logout.php", [], function() {
 		window.location.href = "login.html";
 	});
+}
+
+
+function clearTable(tab) {
+	while(tab.children.length > 1) {
+		var lastchild = tab.children[tab.children.length -1];
+		tab.removeChild(lastchild);
+	}
 }

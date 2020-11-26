@@ -1,43 +1,61 @@
 import { doAjaxGet, doAjaxPost, createFormData } from './ajax.js';
 
 
-
-
-
 window.addEventListener("load", function f() {	    
     let parameters = createFormData(
         [
 		{key:"function", value: "topDownloaded"}
 		]
     );
-    doAjaxPost("api/bookInfo.php", parameters, loadInfo);
+    doAjaxPost("api/bookInfo.php", parameters, populateBookTopDownload);
+	
+	searchBook.setAttribute("change", searchBook);	
 });
 
 
-function loadInfo(responseText) {
+
+
+
+
+function populateBookTopDownload(responseText) {
     let response = JSON.parse(responseText);
     if(response.errorCode < 0) {
         alert("Error requesting data.\nError message: " + response.body);
         return;
-    }		
+    }
 	
 	let listbook = response.body.bookList;
-	var book_example = document.getElementById("book_example");
-	book_example.id = "";
-		
+	
+	clearTable(topdownloaded);
+	
 	for (var i = 0; i < listbook.length; ++i) {
-		var clone = book_example.cloneNode(true);
-		clone.id = "";
-		clone.children[0].firstChild.innerText = listuser[i].name + " " + listuser[i].surname + " " + listuser[i].role_name;
-		clone.getElementsByTagName("a")[0].href = "/update_user.html?name="+listuser[i].name+"&surname="+listuser[i].surname;
-		top_download_list.appendChild(clone)
-	}
-	top_download_list.removeChild(book_example);
+		var x = document.createElement("tr"); 
+		var t = document.createElement("td"); 
+		var a = document.createElement("td");
+		var b = document.createElement("button")
+		
+		t.innerText = = i.title;
+		a.innerText = i.author;
+		b.innerText = i.price + " - Buy";
+		b.setAttribute("idBook", i.idBook);
+		b.setAttribute("onClick", goToBilling);		
+		x.appendChild(t);
+		x.appendChild(a);
+		x.appendChild(b);
+		
+		topdownloaded.appendChild(x)
+	}	
+}
+
+function goToBilling(ev) {
+	ev.preventDefault();
+	let idBook = ev.target.getAttribute("idBook");
+	window.location.href = "./billing.html?idBook=" + idBook;
+	return;
 }
 
 
-
-function searchByTitleOrAuthor(str) {
+function searchBook(str) {
 	let parameters = createFormData(
         [
 		{key:"function", value: "...."}
@@ -47,32 +65,42 @@ function searchByTitleOrAuthor(str) {
 }
 
 
-function searchBook(responseText) {
-	let response = JSON.parse(responseText);
+function searchByTitleOrAuthor(responseText) {
+let response = JSON.parse(responseText);
     if(response.errorCode < 0) {
         alert("Error requesting data.\nError message: " + response.body);
         return;
     }
-	let listbook = response.body.searchBookList;
+	
+	let listbook = response.body.bookList;
+	
+	clearTable(booklist);
 	
 	for (var i = 0; i < listbook.length; ++i) {
-		var clone = book_example.cloneNode(true);
-		clone.id = "";
-		clone.children[0].firstChild.innerText = listuser[i].name + " " + listuser[i].surname + " " + listuser[i].role_name;
-		clone.getElementsByTagName("a")[0].href = "/update_user.html?name="+listuser[i].name+"&surname="+listuser[i].surname;
-		search_list.appendChild(clone)
+		var x = document.createElement("tr"); 
+		var t = document.createElement("td"); 
+		var a = document.createElement("td");
+		var b = document.createElement("button")
+		
+		t.innerText = = i.title;
+		a.innerText = i.author;
+		b.innerText = i.price + " - Buy";
+		b.setAttribute("idBook", i.idBook);
+		b.setAttribute("onClick", goToBilling);		
+		x.appendChild(t);
+		x.appendChild(a);
+		x.appendChild(b);
+		
+		booklist.appendChild(x)
+	}	
+}
+
+
+
+
+function clearTable(tab) {
+	while(tab.children.length > 1) {
+		var lastchild = tab.children[tab.children.length -1];
+		tab.removeChild(lastchild);
 	}
-	search_list.removeChild(book_example);
-	
-}
-
-
-
-function onButtonAddCartClicked(id_) {
-	
-}
-
-
-function onOperationCompleted(responseText) {
-    alert("Operation returned: " + responseText);
 }

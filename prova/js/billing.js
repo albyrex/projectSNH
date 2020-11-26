@@ -19,9 +19,6 @@ window.addEventListener("load", function f() {
 
 
 
-
-
-
 function result(responseText) {
     let response = JSON.parse(responseText);
 	if(response.errorCode == -400) {
