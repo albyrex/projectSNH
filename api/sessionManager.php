@@ -17,6 +17,7 @@ $userNotFound = -1;
 $wrongPassword = -2;
 $loginSuccess = 0;
 $userUnderBruteforceProtection = -3;
+$emailNotVerified = -4;
 
 $loginBruteforceProtectionInterval = 600; //10 minutes
 $maxConsecutiveFailedLoginCount = 5;
@@ -100,6 +101,7 @@ class SessionManager {
     public static function sessionStart($email, $password) {
         global $userNotFound, $wrongPassword, $loginSuccess;
         global $userUnderBruteforceProtection, $maxConsecutiveFailedLoginCount;
+        global $emailNotVerified;
 
         include_once "dbAccess.php";
 
@@ -116,6 +118,12 @@ class SessionManager {
         } else {
             $conn->close();
             return $userNotFound;
+        }
+
+        // Check if the email is verified
+        if($row["verified_email"] != 1) {
+            $conn->close();
+            return $emailNotVerified;
         }
 
         // Check if the user can login or the bruteforce protection has to kick in
