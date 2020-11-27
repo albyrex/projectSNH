@@ -13,10 +13,6 @@ window.addEventListener("load", function f() {
 });
 
 
-
-
-
-
 function populateBookTopDownload(responseText) {
     let response = JSON.parse(responseText);
     if(response.errorCode < 0) {
@@ -94,8 +90,6 @@ let response = JSON.parse(responseText);
 		booklist.appendChild(x)
 	}	
 }
-
-
 
 
 function clearTable(tab) {

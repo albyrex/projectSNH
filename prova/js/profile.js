@@ -12,10 +12,58 @@ window.addEventListener("load", function f() {
 		]
     );
     doAjaxPost("api/bookInfo.php", parameters, populateBookDownload);
+	
+	
+	button_changepwd.addEventListener("click", changePassword);
+	newpwd1.addEventListener(change, function() {
+		if(newpwd1.value == "") {
+			new_pwd_strength.innerText = "";
+			return;
+		}
+		let res = zxcvbn(newpwd1.value);
+		new_pwd_strength.innerText = "Strength: " + res.score;
+	});
+	
+	
 });
 
 
 
+
+function changePassword(ev) {
+	ev.preventDefault();
+	let oldpwd_ = oldpwn.value;
+	let newpwd1_ = newpwd1.value;
+	let newpwd2_ = newpwd2.value;
+	
+	if(newpwd1_ != newpwd2_) {
+		alert("The new passwords are not corresponding")
+		oldpwn.value = "";
+		newpwd1.value = "";
+		newpwd2.value = "";
+		return;
+	}
+	let res = zxcvbn(newpwd1_);
+	if(res.score < 4) {
+	 alert("The new password is not strong enough")
+	 return;
+	}
+ 	let parameters = createFormData(
+        [
+		{key:"oldpwd", value: oldpwd_},
+		{key:"newpwd1", value: newpwd1_},
+		{key:"newpwd2", value: newpwd2_}
+		]
+    );
+    doAjaxPost("api/changePassword.php", parameters, function() {
+	 let response = JSON.parse(responseText);
+	 if(response.errorCode < 0) {
+	  alert("Error requesting data.\nError message: " + response.body);
+	  return;
+	 }
+	 .....
+	});
+}
 
 
 

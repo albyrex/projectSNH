@@ -3,6 +3,15 @@ import { doAjaxGet, doAjaxPost, createFormData } from './ajax.js';
 
 window.addEventListener("load", function f() {
 	button_registration.addEventListener("click", registration);
+	
+	password.addEventListener("change", function() {
+		if(password.value == "") {
+			pwd_strength.innerText = "";
+			return;
+		}
+		let res = zxcvbn(password.value);
+		pwd_strength.innerText = "Strength: " + res.score;
+	});
 });
 
 
@@ -17,6 +26,12 @@ function registration(ev) {
 	let question3_ = question3.value;
 	
 	let answers_ = JSON.stringify([question1_, question2_, question3_]);
+	
+	let res = zxcvbn(password_);
+	if(res.score < 4) {
+		alert("The chosen password is to weak");
+		return;
+	}
 	
 	let parameters = createFormData(
         [
