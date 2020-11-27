@@ -46,7 +46,7 @@ function topDownloaded() {
 
     $conn = getDbConnection();
     $r = $conn->query(
-        "SELECT b.id_book, title, author, date, cover, abstract, price, COUNT(p.id_user) AS downloadCount
+        "SELECT b.id_book, title, author, price, COUNT(p.id_user) AS downloadCount
         FROM books b LEFT OUTER JOIN payments p ON (b.id_book = p.id_book)
         GROUP BY b.id_book
         ORDER BY downloadCount DESC
@@ -159,7 +159,7 @@ function searchByTitleOrAuthor() {
 
     $conn = getDbConnection();
     $stmt = $conn->prepare(
-        "SELECT id_book, title, author, date, cover, abstract, price
+        "SELECT id_book, title, author, price
         FROM books
         WHERE title LIKE ? OR author LIKE ?
         LIMIT 10"

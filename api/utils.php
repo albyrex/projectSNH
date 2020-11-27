@@ -78,7 +78,7 @@ function invalidEmail($email) {
 
 function getBookPath($idBook) {
     $conn = getDbConnection();
-    $stmt = $conn->prepare("SELECT path FROM books WHERE id_book=?");
+    $stmt = $conn->prepare("SELECT id_book FROM books WHERE id_book=?");
     $stmt->bind_param("i", $idBook);
     $success = $stmt->execute();
     if($success === false){
@@ -89,7 +89,7 @@ function getBookPath($idBook) {
     if($result->num_rows > 0) {
         $row = $result->fetch_assoc();
         $conn->close();
-        return "../pdfs/" . $row["path"];
+        return "../pdfs/" . $row["id_book"];
     } else {
         $conn->close();
         return -1;
