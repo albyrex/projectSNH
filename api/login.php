@@ -27,7 +27,7 @@ $password = checkPostParameterOrDie("password");
 $result = SessionManager::sessionStart($email, $password);
 
 if($result == $userNotFound || $result == $wrongPassword) {
-    die("{\"errorCode\": -4, \"body\": \"Bad credentials\"}");
+    die("{\"errorCode\": -4, \"body\": \"Something went wrong\"}");
 } else if($result == $loginSuccess) {
     if(SessionManager::isAdmin())
         die("{\"errorCode\": 0, \"body\": 1}");  // Controllare!!!
