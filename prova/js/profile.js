@@ -1,9 +1,5 @@
 import { doAjaxGet, doAjaxPost, createFormData } from './ajax.js';
 
-
-
-
-
 window.addEventListener("load", function f() {	    
     doAjaxPost("api/userStatus.php", [], setUsername);
 	let parameters = createFormData(
@@ -13,59 +9,63 @@ window.addEventListener("load", function f() {
     );
     doAjaxPost("api/bookInfo.php", parameters, populateBookDownload);
 	
-	
 	button_changepwd.addEventListener("click", changePassword);
-	newpwd1.addEventListener(change, function() {
+	
+	newpwd1.addEventListener("change", function() {
 		if(newpwd1.value == "") {
 			new_pwd_strength.innerText = "";
 			return;
 		}
 		let res = zxcvbn(newpwd1.value);
 		new_pwd_strength.innerText = "Strength: " + res.score;
-	});
-	
-	
+	});	
 });
-
-
 
 
 function changePassword(ev) {
 	ev.preventDefault();
-	let oldpwd_ = oldpwn.value;
+	let oldpwd_ = oldpwd.value;
 	let newpwd1_ = newpwd1.value;
 	let newpwd2_ = newpwd2.value;
 	
 	if(newpwd1_ != newpwd2_) {
-		alert("The new passwords are not corresponding")
-		oldpwn.value = "";
-		newpwd1.value = "";
-		newpwd2.value = "";
+		alert("The new passwords are not corresponding");
 		return;
 	}
 	let res = zxcvbn(newpwd1_);
 	if(res.score < 4) {
-	 alert("The new password is not strong enough")
+	 alert("The new password is not strong enough");
 	 return;
 	}
+	
+	if(oldpwd_ == newpwd1_) {
+		alert("The old and the new passwords are the same");
+		return;
+	}
+	
  	let parameters = createFormData(
         [
 		{key:"oldpwd", value: oldpwd_},
-		{key:"newpwd1", value: newpwd1_},
-		{key:"newpwd2", value: newpwd2_}
+		{key:"newpwd", value: newpwd1_}
 		]
     );
     doAjaxPost("api/changePassword.php", parameters, function() {
-	 let response = JSON.parse(responseText);
-	 if(response.errorCode < 0) {
-	  alert("Error requesting data.\nError message: " + response.body);
-	  return;
-	 }
-	 .....
+		let response = JSON.parse(responseText);
+		if(response.errorCode == - 2) {
+		 alert("Wrong old password");
+		 return;
+		}
+		if(response.errorCode < 0) {
+        	alert("Error requesting data.\nError message: " + response.body);
+        	return;
+    	}
+		alert("Password changed correctly");
+		oldpwd.value = "";
+		newpwd1.value = "";
+		newpwd2.value = "";
+		return;
 	});
 }
-
-
 
 function setUsername(responseText) {
     let response = JSON.parse(responseText);
