@@ -81,6 +81,7 @@ class SessionManager {
         if($success === false) {
             return -1;
         }
+        SessionManager::sendVerificationEmail($email);
         return 0;
     }
 
@@ -163,12 +164,62 @@ class SessionManager {
         return $loginSuccess;
     }
 
+
+
+    /*
+       Private functions
+    */
+
     private static function updateDbLoginInfo($conn, $email, $consecutiveFailedLoginCount, $failedLoginTimestamp) {
         $stmt = $conn->prepare(
             "UPDATE users SET consecutive_failed_login_count = ?, failed_login_timestamp = ? WHERE BINARY email = ?"
         );
         $stmt->bind_param("iis", $consecutiveFailedLoginCount, $failedLoginTimestamp, $email);
         $stmt->execute();
+    }
+
+    private static function sendVerificationEmail($email) {
+        include_once "dbAccess.php";
+        require "./lib/PHPMailer/PHPMailer.php";
+        require "./lib/PHPMailer/SMTP.php";
+        use PHPMailer\PHPMailer\PHPMailer;
+        use PHPMailer\PHPMailer\SMTP;
+        use PHPMailer\PHPMailer\Exception;
+
+        // Generate random token
+        $token = openssl_random_pseudo_bytes(16); // 32 characters long
+        if(!$token)
+            return false;
+
+        $token = bin2hex($token);
+
+        // Store the token in the database
+        $conn = getDbConnection();
+        $stmt = $conn->prepare(
+            "UPDATE users SET email_verification_token = ? WHERE BINARY email = ?"
+        );
+        $stmt->bind_param("ss", $token, $email);
+        $stmt->execute();
+        $conn->close();
+
+        // Prepare and send the email
+        $verificationUrl = "https://???/verifyEmail.php?token=$token&email=$email";
+        $msg = "Your verification link is $verificationUrl";
+        $subject = "E-mail verification for bookshop";
+        $mail = new PHPMailer;
+        $mail->setFrom('noreply@bookshop.com');
+        $mail->addAddress($email);
+        $mail->Subject = $subject;
+        $mail->Body = $msg;
+        $mail->IsSMTP();
+        $mail->SMTPSecure = 'ssl';
+        $mail->Host = 'ssl://smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Port = 465;
+        $mail->Username = 'ebookunipi@gmail.com';
+        $mail->Password = 'phpmailertest*';
+
+        return $mail->send();
     }
 
 }
