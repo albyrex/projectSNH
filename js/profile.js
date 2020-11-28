@@ -11,7 +11,7 @@ window.addEventListener("load", function f() {
 	
 	button_changepwd.addEventListener("click", changePassword);
 	
-	newpwd1.addEventListener("change", function() {
+	newpwd1.addEventListener("keydown", function() {
 		if(newpwd1.value == "") {
 			new_pwd_strength.innerText = "";
 			return;
@@ -32,6 +32,7 @@ function changePassword(ev) {
 		alert("The new passwords are not corresponding");
 		return;
 	}
+	
 	let res = zxcvbn(newpwd1_);
 	if(res.score < 4) {
 	 alert("The new password is not strong enough");
@@ -49,7 +50,7 @@ function changePassword(ev) {
 		{key:"newpwd", value: newpwd1_}
 		]
     );
-    doAjaxPost("api/changePassword.php", parameters, function() {
+    doAjaxPost("api/changePassword.php", parameters, function(responseText) {
 		let response = JSON.parse(responseText);
 		if(response.errorCode == - 2) {
 		 alert("Wrong old password");

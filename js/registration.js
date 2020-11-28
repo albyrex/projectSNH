@@ -4,7 +4,7 @@
 window.addEventListener("load", function f() {
 	button_registration.addEventListener("click", registration);
 	
-	password.addEventListener("change", function() {
+	password.addEventListener("keydown", function() {
 		if(password.value == "") {
 			pwd_strength.innerText = "";
 			return;

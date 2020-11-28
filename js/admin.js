@@ -28,26 +28,30 @@ function populateBook(responseText) {
 	clearTable(booklist);
 	
 	for (var i = 0; i < listbook.length; ++i) {
+		var book = listbook[i];
 		var x = document.createElement("tr"); 
 		var t = document.createElement("td"); 
 		var a = document.createElement("td");
+		var p = document.createElement("td");
 		var b = document.createElement("button");
 		
-		t.innerText = i.title;
-		a.innerText = i.author;
+		t.innerText = book.title;
+		a.innerText = book.author;
+		p.innerText = book.price;
 		b.innerText = "Remove";
-		b.setAttribute("idBook", i.idBook);
-		b.setAttribute("onClick", removeBook);		
+		b.setAttribute("idBook", book.id_book);
+		b.addEventListener("click", removeBook);		
 		x.appendChild(t);
 		x.appendChild(a);
+		x.appendChild(p);
 		x.appendChild(b);
 		
-		booklistdownload.appendChild(x)
-	}	
+		booklist.appendChild(x)
+	}
 }
 
 
-function seachBook(ev) {
+function searchBook(ev) {
 	let parameters = createFormData(
         [
 		{key:"function", value: "searchByTitleOrAuthor"},

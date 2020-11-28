@@ -130,7 +130,8 @@ class SessionManager {
         $stmt = $conn->prepare(
             "UPDATE users SET password = ? WHERE id_user = ?"
         );
-        $stmt->bind_param("si", hashPassword($newpwd), $idUser);
+		$newHashedPassword = SessionManager::hashPassword($newpwd);
+		$stmt->bind_param("si", $newHashedPassword, $idUser);
         $stmt->execute();
         $conn->close();
 
