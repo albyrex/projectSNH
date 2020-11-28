@@ -10,7 +10,6 @@ window.addEventListener("load", function f() {
 function recovery(ev) {
 	ev.preventDefault();
 	let email_ = email.value;
-	let username_ = username.value;
 	let question1_ = question1.value;
 	let question2_ = question2.value;
 	let question3_ = question3.value;
@@ -21,11 +20,10 @@ function recovery(ev) {
         [
 		{key:"email", value: email_},
 		{key:"password", value: password_},
-		{key:"username", value: username_},
 		{key:"answers", value: answers_}
 		]
     );
-    doAjaxPost("api/password-recovery.php", parameters, onOperationCompleted);
+    doAjaxPost("api/passwordRecovery.php", parameters, onOperationCompleted);
 }
 
 

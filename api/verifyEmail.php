@@ -33,7 +33,7 @@ if($operationResult != $operationSuccessful) {
 	<title>EMAIL VERIFIED</title>
     <script type="application/javascript">
         var sec = 5;
-        window.addEventListener("load" function() {
+        window.addEventListener("load", function() {
             let interval = setInterval(function() {
                 countdown.innerText = sec;
                 if(sec <= 0) {

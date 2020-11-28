@@ -70,8 +70,10 @@ class SessionManager {
         - -1 in case of failure if the email is already in use
     */
     public static function createUser($email, $username, $password, $answers) {
-        include_once "dbAccess.php";
-
+        global $operationSuccessful;
+		
+		include_once "dbAccess.php";
+		 
         $hashedPassword = SessionManager::hashPassword($password);
 
         $conn = getDbConnection();

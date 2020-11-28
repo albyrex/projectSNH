@@ -16,11 +16,22 @@ window.addEventListener("load", function f() {
 			link_ad.innerText = "Admin";
 			link_ad.href = "admin.html";
 			navbar.appendChild(link_ad);
-			return;
 		}
+		let lout = document.createElement("a");
+		lout.innerText = "Logout";
+		lout.href = "javascript:logout()";
+		navbar.appendChild(lout);
 	});
 	
-	searchBook.setAttribute("change", searchBook);	
+	searchBook.addEventListener("change", function(ev) {
+		let parameters = createFormData(
+        [
+		{key:"function", value: "searchByTitleOrAuthor"},
+		{key:"searchString", value: ev.target.value},
+		]
+    );
+    doAjaxPost("api/bookInfo.php", parameters, searchByTitleOrAuthor);
+	});	
 });
 
 
@@ -63,16 +74,6 @@ function goToBilling(ev) {
 }
 
 
-function seachBook(ev) {
-	let parameters = createFormData(
-        [
-		{key:"function", value: "searchByTitleOrAuthor"},
-		{key:"searchString", value: ev.target.value},
-		]
-    );
-    doAjaxPost("api/bookInfo.php", parameters, populateBook);
-}
-
 
 function searchByTitleOrAuthor(responseText) {
 let response = JSON.parse(responseText);
@@ -95,7 +96,7 @@ let response = JSON.parse(responseText);
 		t.innerText = book.title;
 		a.innerText = book.author;
 		b.innerText = book.price + " - Buy";
-		b.setAttribute("idBook", i.id_book);
+		b.setAttribute("idBook", book.id_book);
 		b.addEventListener("click", goToBilling);		
 		x.appendChild(t);
 		x.appendChild(a);
@@ -111,4 +112,11 @@ function clearTable(tab) {
 		var lastchild = tab.children[tab.children.length -1];
 		tab.removeChild(lastchild);
 	}
+}
+
+
+function logout() {
+	doAjaxPost("api/logout.php", [], function() {
+		window.location.href = "login.html";
+	});
 }

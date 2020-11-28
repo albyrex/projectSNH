@@ -49,9 +49,8 @@ function registration(ev) {
 function onOperationCompleted(responseText) {
     let response = JSON.parse(responseText);
     if(response.errorCode == 0 || response.errorCode == -2) {
-		if(response.body == 0){
-            window.location.replace("login.html");
-		}
+		alert("User registration succeded");
+		window.location.replace("login.html");
 	}else if(response.errorCode == -400){
 		alert("Error: missing parameters");
 	}else if(response.errorCode == -4){

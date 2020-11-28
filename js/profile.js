@@ -16,14 +16,11 @@ window.addEventListener("load", function f() {
 			link_ad.innerText = "Admin";
 			link_ad.href = "admin.html";
 			navbar.appendChild(link_ad);
-			
-			let lout = document.createElement("a");
-			lout.innerText = "Logout";
-			lout.href = "javascript:logout()";
-			navbar.appendChild(lout);
-			
-			return;
 		}
+		let lout = document.createElement("a");
+		lout.innerText = "Logout";
+		lout.href = "javascript:logout()";
+		navbar.appendChild(lout);
 	});	
 	
 	button_changepwd.addEventListener("click", changePassword);
@@ -119,7 +116,7 @@ function populateBookDownload(responseText) {
 		t.innerText = book.title;
 		a.innerText = book.author;
 		b.innerText = "Download";
-		b.setAttribute("idBook", i.id_book);
+		b.setAttribute("idBook", book.id_book);
 		b.addEventListener("click", directDownload);		
 		x.appendChild(t);
 		x.appendChild(a);
@@ -132,7 +129,7 @@ function populateBookDownload(responseText) {
 
 function directDownload(ev) {
 	var idBook = ev.target.getAttribute("idBook");
-	window.location.href = "api/downloadBood.php?idBook=" + idBook
+	window.location.href = "api/downloadBook.php?idBook=" + idBook
 }
 
 
