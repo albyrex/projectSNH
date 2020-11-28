@@ -282,6 +282,38 @@ class SessionManager {
         }
     }
 
+    public static function verifyEmail($email, $token) {
+        global $emailNotVerified, $operationSuccessful;
+
+        include_once "dbAccess.php";
+
+        // Retrive the user given his email and verification token
+        $conn = getDbConnection();
+        $stmt = $conn->prepare(
+            "SELECT id_user FROM users WHERE email = ? AND email_verification_token = ?"
+        );
+        $stmt->bind_param("ss", $email, $token);
+        $stmt->execute();
+
+        // Check if it really exists
+        $result = $stmt->get_result();
+        if($result->num_rows > 0) {
+
+        } else {
+            $conn->close();
+            return $emailNotVerified;
+        }
+
+        // Update the database record
+        $stmt = $conn->prepare(
+            "UPDATE users SET verified_email = 1, email_verification_token = NULL WHERE email = ?"
+        );
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+
+        return $operationSuccessful;
+    }
+
 
     /*
        Private functions
@@ -304,11 +336,7 @@ class SessionManager {
         use PHPMailer\PHPMailer\Exception;
 
         // Generate random token
-        $token = openssl_random_pseudo_bytes(16); // 32 characters long
-        if(!$token)
-            return false;
-
-        $token = bin2hex($token);
+        $token = bin2hex(random_bytes(16));
 
         // Store the token in the database
         $conn = getDbConnection();
@@ -320,7 +348,7 @@ class SessionManager {
         $conn->close();
 
         // Prepare and send the email
-        $verificationUrl = "https://???/verifyEmail.php?token=$token&email=$email";
+        $verificationUrl = "https://localhost/api/verifyEmail.php?token=$token&email=$email";
         $msg = "Your verification link is $verificationUrl";
         $subject = "E-mail verification for bookshop";
         $mail = new PHPMailer;
