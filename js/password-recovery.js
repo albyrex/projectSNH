@@ -23,7 +23,7 @@ function recovery(ev) {
 		{key:"answers", value: answers_}
 		]
     );
-    doAjaxPost("api/passwordRecovery.php", parameters, onOperationCompleted);
+    doAjaxPost("api/requestPasswordRecovery.php", parameters, onOperationCompleted);
 }
 
 
