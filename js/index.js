@@ -9,6 +9,17 @@ window.addEventListener("load", function f() {
     );
     doAjaxPost("api/bookInfo.php", parameters, populateBookTopDownload);
 	
+	doAjaxPost("api/userStatus.php", [], function(responseText) {
+		let response = JSON.parse(responseText);
+		if(response.body.status == 1) {
+			let link_ad = document.createElement("a");
+			link_ad.innerText = "Admin";
+			link_ad.href = "admin.html";
+			navbar.appendChild(link_ad);
+			return;
+		}
+	});
+	
 	searchBook.setAttribute("change", searchBook);	
 });
 

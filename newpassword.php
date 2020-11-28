@@ -27,7 +27,8 @@ if(!isset($_POST["newpwd1"]) || $_POST["newpwd1"] == "") {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>NEW PASSWORD</title>
+    <link rel="stylesheet" href="css/style.css">
+	<title>NEW PASSWORD</title>
 </head>
 
 <body>
