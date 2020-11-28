@@ -23,10 +23,12 @@ $DEBUG_MODE = false;
 if(!$DEBUG_MODE) {
     // Check if user is logged
     if(!SessionManager::isLogged()) {
+        header("HTTP/1.0 400 Bad Request");
         die("{\"errorCode\": -2, \"body\": \"User is not logged\"}");
     }
     // Check if user is an admin
     if(!SessionManager::isAdmin()) {
+        header("HTTP/1.0 400 Bad Request");
         die("{\"errorCode\": -2, \"body\": \"User is not an admin\"}");
     }
 }

@@ -89,7 +89,7 @@ class SessionManager {
         include_once "dbAccess.php";
 
         $conn = getDbConnection();
-        $stmt = $conn->prepare("SELECT id_user FROM payments WHERE id_user=? AND id_book=?");
+        $stmt = $conn->prepare("SELECT id_user FROM payments WHERE id_user = ? AND id_book = ?");
         $stmt->bind_param("ii", $idUser, $idBook);
         $success = $stmt->execute();
         $result = $stmt->get_result();
@@ -260,6 +260,27 @@ class SessionManager {
         }
     }
 
+    public static function validIdBook($idBook) {
+        include_once "dbAccess.php";
+
+        // Retrive the book given his id_book
+        $conn = getDbConnection();
+        $stmt = $conn->prepare(
+            "SELECT id_book FROM books WHERE id_book = ?"
+        );
+        $stmt->bind_param("i", $idBook);
+        $stmt->execute();
+
+        // Check if it really exists
+        $result = $stmt->get_result();
+        if($result->num_rows > 0) {
+            $conn->close();
+            return true;
+        } else {
+            $conn->close();
+            return false;
+        }
+    }
 
 
     /*

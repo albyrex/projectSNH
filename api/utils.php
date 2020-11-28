@@ -9,7 +9,7 @@
 function checkPostParameterOrDie($parName) {
     if(!isset($_POST[$parName]) || $_POST[$parName] == "") {
         header("HTTP/1.0 400 Bad Request");
-        die("{\"errorCode\": -400, \"body\": \"Invalid request\"}");
+        die("{\"errorCode\": -400, \"body\": \"Bad request\"}");
     }
     return $_POST[$parName];
 }
@@ -17,7 +17,7 @@ function checkPostParameterOrDie($parName) {
 function checkPostNumericParameterOrDie($parName) {
     if(!isset($_POST[$parName]) || $_POST[$parName] == "" || !is_numeric($_POST[$parName])) {
         header("HTTP/1.0 400 Bad Request");
-        die("{\"errorCode\": -400, \"body\": \"Invalid request\"}");
+        die("{\"errorCode\": -400, \"body\": \"Bad request\"}");
     }
     return (int)$_POST[$parName];
 }
@@ -25,7 +25,7 @@ function checkPostNumericParameterOrDie($parName) {
 function checkGetParameterOrDie($parName) {
     if(!isset($_GET[$parName]) || $_GET[$parName] == "") {
         header("HTTP/1.0 400 Bad Request");
-        die("{\"errorCode\": -400, \"body\": \"Invalid request\"}");
+        die("{\"errorCode\": -400, \"body\": \"Bad request\"}");
     }
     return $_GET[$parName];
 }
@@ -33,7 +33,7 @@ function checkGetParameterOrDie($parName) {
 function checkGetNumericParameterOrDie($parName) {
     if(!isset($_GET[$parName]) || $_GET[$parName] == "" || !is_numeric($_GET[$parName])) {
         header("HTTP/1.0 400 Bad Request");
-        die("{\"errorCode\": -400, \"body\": \"Invalid request\"}");
+        die("{\"errorCode\": -400, \"body\": \"Bad request\"}");
     }
     return (int)$_GET[$parName];
 }
