@@ -39,6 +39,7 @@ else {
 
 
 function topDownloaded() {
+	global $TOP_DOWNLOADED_SIZE;
     $result = new stdClass();
     $result->errorCode = 0;
     $result->body = new stdClass();

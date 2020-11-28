@@ -339,9 +339,9 @@ class SessionManager {
         include_once "dbAccess.php";
         require "./lib/PHPMailer/PHPMailer.php";
         require "./lib/PHPMailer/SMTP.php";
-        use PHPMailer\PHPMailer\PHPMailer;
-        use PHPMailer\PHPMailer\SMTP;
-        use PHPMailer\PHPMailer\Exception;
+        //use PHPMailer\PHPMailer\PHPMailer;
+        //use PHPMailer\PHPMailer\SMTP;
+        //use PHPMailer\PHPMailer\Exception;
 
         // Generate random token
         $token = bin2hex(random_bytes(16));
