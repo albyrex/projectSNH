@@ -18,6 +18,7 @@ $wrongPassword = -2;
 $operationSuccessful = 0;
 $userUnderBruteforceProtection = -3;
 $emailNotVerified = -4;
+$emailAlreadyVerified = -5;
 
 $loginBruteforceProtectionInterval = 600; //10 minutes
 $maxConsecutiveFailedLoginCount = 5;
@@ -283,14 +284,14 @@ class SessionManager {
     }
 
     public static function verifyEmail($email, $token) {
-        global $emailNotVerified, $operationSuccessful;
+        global $emailNotVerified, $operationSuccessful, $emailAlreadyVerified;
 
         include_once "dbAccess.php";
 
         // Retrive the user given his email and verification token
         $conn = getDbConnection();
         $stmt = $conn->prepare(
-            "SELECT id_user FROM users WHERE email = ? AND email_verification_token = ?"
+            "SELECT verified_email FROM users WHERE email = ? AND email_verification_token = ?"
         );
         $stmt->bind_param("ss", $email, $token);
         $stmt->execute();
@@ -298,10 +299,16 @@ class SessionManager {
         // Check if it really exists
         $result = $stmt->get_result();
         if($result->num_rows > 0) {
-
+            $row = $result->fetch_assoc();
         } else {
             $conn->close();
             return $emailNotVerified;
+        }
+
+        // Check if it is already verified
+        if($row["verified_email"] != 0) {
+            $conn->close();
+            return $emailAlreadyVerified;
         }
 
         // Update the database record
@@ -310,6 +317,7 @@ class SessionManager {
         );
         $stmt->bind_param("s", $email);
         $stmt->execute();
+        $conn->close();
 
         return $operationSuccessful;
     }

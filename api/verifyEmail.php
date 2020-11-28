@@ -1,7 +1,8 @@
 <?php
 
 /*
-  This page allow a user to buy a book
+  This page allow a user to verify his email.
+  The link to this page is provided via an email.
 */
 
 include_once "sessionManager.php";
