@@ -11,12 +11,12 @@
 */
 
 include_once "sessionManager.php";
-include_once "dbAccess.php";
 include_once "utils.php";
 
 
 // Check if the user is already logged
 if(SessionManager::isLogged()) {
+    header("HTTP/1.0 400 Bad Request");
     die("{\"errorCode\": -2, \"body\": \"User is already logged\"}");
 }
 
@@ -27,8 +27,9 @@ $password = checkPostParameterOrDie("password");
 $result = SessionManager::sessionStart($email, $password);
 
 if($result == $userNotFound || $result == $wrongPassword) {
+    header("HTTP/1.0 400 Bad Request");
     die("{\"errorCode\": -4, \"body\": \"Something went wrong\"}");
-} else if($result == $loginSuccess) {
+} else if($result == $operationSuccessful) {
     if(SessionManager::isAdmin())
         die("{\"errorCode\": 0, \"body\": 1}");  // Controllare!!!
     else

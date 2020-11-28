@@ -15,7 +15,7 @@ if(session_status() == PHP_SESSION_NONE) {
 
 $userNotFound = -1;
 $wrongPassword = -2;
-$loginSuccess = 0;
+$operationSuccessful = 0;
 $userUnderBruteforceProtection = -3;
 $emailNotVerified = -4;
 
@@ -82,7 +82,7 @@ class SessionManager {
             return -1;
         }
         SessionManager::sendVerificationEmail($email);
-        return 0;
+        return $operationSuccessful;
     }
 
     public static function userCanDownload($idUser, $idBook) {
@@ -99,8 +99,84 @@ class SessionManager {
         return false;
     }
 
+    public static function changeUserPassword($idUser, $oldpwd, $newpwd) {
+        global $userNotFound, $wrongPassword, $operationSuccessful;
+
+        include_once "dbAccess.php";
+
+        // Retrive the user from the database
+        $conn = getDbConnection();
+        $stmt = $conn->prepare("SELECT * FROM users WHERE id_user = ?");
+        $stmt->bind_param("i", $idUser);
+        $stmt->execute();
+
+        // Check if it really exists
+        $result = $stmt->get_result();
+        if($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+        } else {
+            $conn->close();
+            return $userNotFound;
+        }
+
+        // Check if the old password is wrong
+        if(!password_verify($password, $row["password"])) {
+            $conn->close();
+            return $wrongPassword;
+        }
+
+        // Update the password in the database
+        $stmt = $conn->prepare(
+            "UPDATE users SET password = ? WHERE id_user = ?"
+        );
+        $stmt->bind_param("si", hashPassword($newpwd), $idUser);
+        $stmt->execute();
+        $conn->close();
+
+        return $operationSuccessful;
+    }
+
+    public static function changeUserPasswordByToken($email, $token, $newpwd) {
+        global $userNotFound, $wrongPassword, $operationSuccessful;
+
+        include_once "dbAccess.php";
+
+        // Retrive the user from the database
+        $conn = getDbConnection();
+        $stmt = $conn->prepare(
+            "SELECT email_verification_token FROM users WHERE email = ?"
+        );
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+
+        // Check if it really exists
+        $result = $stmt->get_result();
+        if($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+        } else {
+            $conn->close();
+            return $userNotFound;
+        }
+
+        // Check if the token is wrong
+        if($row["email_verification_token"] != $token) {
+            $conn->close();
+            return $wrongPassword;
+        }
+
+        // Update the password in the database
+        $stmt = $conn->prepare(
+            "UPDATE users SET password = ? WHERE email = ?"
+        );
+        $stmt->bind_param("ss", hashPassword($newpwd), $email);
+        $stmt->execute();
+        $conn->close();
+
+        return $operationSuccessful;
+    }
+
     public static function sessionStart($email, $password) {
-        global $userNotFound, $wrongPassword, $loginSuccess;
+        global $userNotFound, $wrongPassword, $operationSuccessful;
         global $userUnderBruteforceProtection, $maxConsecutiveFailedLoginCount;
         global $emailNotVerified;
 
@@ -150,8 +226,6 @@ class SessionManager {
 
         // If I'm here the login credentials are correct and the user can
         // finally login
-        $consecutiveFailedLoginCount = 0;
-        $failedLoginTimestamp = 0;
         SessionManager::updateDbLoginInfo($conn, $email, 0, 0);
         $conn->close();
         if(session_status() == PHP_SESSION_NONE) {
@@ -161,7 +235,29 @@ class SessionManager {
         $_SESSION["email"] = $row["email"];
         $_SESSION["username"] = $row["username"];
         $_SESSION["admin"] = $row["admin"];
-        return $loginSuccess;
+        return $operationSuccessful;
+    }
+
+    public static function validToken($email, $token) {
+        include_once "dbAccess.php";
+
+        // Retrive the user given his email and his token
+        $conn = getDbConnection();
+        $stmt = $conn->prepare(
+            "SELECT id_user FROM users WHERE email = ? AND token = ?"
+        );
+        $stmt->bind_param("ss", $email, $token);
+        $stmt->execute();
+
+        // Check if it really exists
+        $result = $stmt->get_result();
+        if($result->num_rows > 0) {
+            $conn->close();
+            return true;
+        } else {
+            $conn->close();
+            return false;
+        }
     }
 
 

@@ -1,14 +1,26 @@
 <?php
 
-if ($_POST["newpwd1"] == "" || !isset($_POST["newpwd1"])) {
-	
-}else{
-	
-}
+/*
+  This page allow a user to recover his password.
+  No "manually" access to this page can be performed: only a valid link received
+  by email can let the user access correctly this page.
+*/
 
+include_once "sessionManager.php";
+include_once "utils.php";
+
+if(!isset($_POST["newpwd1"]) || $_POST["newpwd1"] == "") {
+	$token = checkGetParameterOrDie($token);
+	$email = checkGetParameterOrDie($email);
+	if(invalidEmail($email)) {
+		header("HTTP/1.0 400 Bad Request");
+		die("Error: invalid request");
+	}
+	if(!SessionManager::validToken($email, $token)) {
+		header("HTTP/1.0 400 Bad Request");
+		die("Error: invalid request");
+	}
 ?>
-
-
 <!DOCTYPE html>
 <html>
 
@@ -21,15 +33,47 @@ if ($_POST["newpwd1"] == "" || !isset($_POST["newpwd1"])) {
 <body>
 	<h1>INSERT NEW PASSWORD</h1>
 	<br><br><br><br>
-    <form method="post" action="newpassword.php">  
+    <form method="post" action="newpassword.php">
 	  	<label for="newpwd1">NEW PASSWORD</label><br>
 	  	<input type="password" id="newpwd1" name="newpwd1"><br><br>
 		<label for="newpwd2">REPEAT NEW PASSWORD</label><br>
 	  	<input type="password" id="newpwd2" name="newpwd2"><br><br>
 	  	<input type="submit" value="CHANGE YOUR PASSWORD">
-		<input type="text" style="display:none" name="token">
-		<input type="text" style="display:none" name="email">
-	</form>	
+		<input type="text" style="display:none" name="token" value="<?php echo $token; ?>">
+		<input type="text" style="display:none" name="email" value="<?php echo $email; ?>">
+	</form>
 </body>
 
 </html>
+<?php
+	die("");
+}
+
+
+// The user has already typed his new pasword. Let's change it!
+$newpwd1 = checkPostParameterOrDie("newpwd1");
+$newpwd2 = checkPostParameterOrDie("newpwd2");
+$token = checkPostParameterOrDie("token");
+$email = checkPostParameterOrDie("email");
+
+if($newpwd1 != $newpwd2) {
+	header("HTTP/1.0 400 Bad Request");
+	die("Error: the two passwords do not correspond");
+}
+
+if(invalidEmail($email)) {
+	header("HTTP/1.0 400 Bad Request");
+	die("Error: invalid request");
+}
+
+$operationResult = changeUserPasswordByToken($email, $token, $newpwd1);
+
+if($operationResult != $operationSuccessful) {
+	header("HTTP/1.0 400 Bad Request");
+	die("Error: invalid request");
+}
+
+// If everything is ok, redirect the user to the login page
+header("location: login.html");
+
+?>
