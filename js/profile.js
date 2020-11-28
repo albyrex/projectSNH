@@ -95,9 +95,9 @@ function populateBookDownload(responseText) {
 		var x = document.createElement("tr"); 
 		var t = document.createElement("td"); 
 		var a = document.createElement("td");
-		var b = document.createElement("button")
+		var b = document.createElement("button");
 		
-		t.innerText = = i.title;
+		t.innerText = i.title;
 		a.innerText = i.author;
 		b.innerText = "Download";
 		b.setAttribute("idBook", i.idBook);

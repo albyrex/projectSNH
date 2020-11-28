@@ -33,7 +33,7 @@ function populateBook(responseText) {
 		var a = document.createElement("td");
 		var b = document.createElement("button");
 		
-		t.innerText = = i.title;
+		t.innerText = i.title;
 		a.innerText = i.author;
 		b.innerText = "Remove";
 		b.setAttribute("idBook", i.idBook);
