@@ -111,10 +111,7 @@ function addBook() {
     }
     move_uploaded_file($_FILES["book"]["tmp_name"], $targetFile);
 
-    $result = new stdClass();
-    $result->errorCode = 0;
-    $result->body = "Ok";
-    echo json_encode($result);
+    die("{\"errorCode\": 0, \"body\": \"Ok\"}");
 }
 
 function removeBookById() {
@@ -137,6 +134,8 @@ function removeBookById() {
         header("HTTP/1.0 500 Internal Server Error");
         die("{\"errorCode\": -500, \"body\": \"Internal server error\"}");
     }
+
+    unlink($path);
 
     die("{\"errorCode\": 0, \"body\": \"Ok\"}");
 }
