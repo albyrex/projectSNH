@@ -82,8 +82,10 @@ class SessionManager {
         if($success === false) {
             return -1;
         }
-        SessionManager::sendVerificationEmail($email);
-        return $operationSuccessful;
+        if(SessionManager::sendVerificationEmail($email))
+            return $operationSuccessful;
+        else
+            return -1;
     }
 
     public static function userCanDownload($idUser, $idBook) {
@@ -340,9 +342,6 @@ class SessionManager {
         include_once "dbAccess.php";
         require "./lib/PHPMailer/PHPMailer.php";
         require "./lib/PHPMailer/SMTP.php";
-        //use PHPMailer\PHPMailer\PHPMailer;
-        //use PHPMailer\PHPMailer\SMTP;
-        //use PHPMailer\PHPMailer\Exception;
 
         // Generate random token
         $token = bin2hex(random_bytes(16));
@@ -358,22 +357,24 @@ class SessionManager {
 
         // Prepare and send the email
         $verificationUrl = "https://localhost/api/verifyEmail.php?token=$token&email=$email";
-        $msg = "Your verification link is $verificationUrl";
-        $subject = "E-mail verification for bookshop";
-        $mail = new PHPMailer;
-        $mail->setFrom('noreply@bookshop.com');
-        $mail->addAddress($email);
-        $mail->Subject = $subject;
-        $mail->Body = $msg;
-        $mail->IsSMTP();
-        $mail->SMTPSecure = 'ssl';
-        $mail->Host = 'ssl://smtp.gmail.com';
-        $mail->SMTPAuth = true;
-        $mail->Port = 465;
-        $mail->Username = 'ebookunipi@gmail.com';
-        $mail->Password = 'phpmailertest*';
-
-        return $mail->send();
+        try {
+            $mail = new PHPMailer\PHPMailer\PHPMailer;
+            $mail->setFrom("noreply@bookshop.com");
+            $mail->addAddress($email);
+            $mail->Subject = "E-mail verification for bookshop";
+            $mail->Body = "Your verification link is $verificationUrl";
+            $mail->IsSMTP();
+            $mail->SMTPSecure = "ssl";
+            $mail->Host = "ssl://smtp.gmail.com";
+            $mail->SMTPAuth = true;
+            $mail->Port = 465;
+            $mail->Username = "ebookunipi@gmail.com";
+            $mail->Password = "phpmailertest*";
+            $mail->send();
+            return true;
+        } catch (Exception $e) {
+            return false;
+        }
     }
 
 }

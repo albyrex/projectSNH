@@ -34,7 +34,7 @@ if($operationResult != $operationSuccessful) {
     <script type="application/javascript">
         var sec = 5;
         window.addEventListener("load" function() {
-            let interval = setInterval(function(){
+            let interval = setInterval(function() {
                 countdown.innerText = sec;
                 if(sec <= 0) {
                     clearInterval(interval);
