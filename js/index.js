@@ -75,16 +75,17 @@ let response = JSON.parse(responseText);
 	clearTable(booklist);
 	
 	for (var i = 0; i < listbook.length; ++i) {
+		var book = listbook[i];
 		var x = document.createElement("tr"); 
 		var t = document.createElement("td"); 
 		var a = document.createElement("td");
 		var b = document.createElement("button");
 		
-		t.innerText = i.title;
-		a.innerText = i.author;
-		b.innerText = i.price + " - Buy";
-		b.setAttribute("idBook", i.idBook);
-		b.setAttribute("onClick", goToBilling);		
+		t.innerText = book.title;
+		a.innerText = book.author;
+		b.innerText = book.price + " - Buy";
+		b.setAttribute("idBook", i.id_book);
+		b.addEventListener("click", goToBilling);		
 		x.appendChild(t);
 		x.appendChild(a);
 		x.appendChild(b);

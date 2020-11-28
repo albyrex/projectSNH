@@ -93,16 +93,17 @@ function populateBookDownload(responseText) {
 	clearTable(booklistdownload);
 	
 	for (var i = 0; i < listbook.length; ++i) {
+		var book = listbook[i];
 		var x = document.createElement("tr"); 
 		var t = document.createElement("td"); 
 		var a = document.createElement("td");
 		var b = document.createElement("button");
 		
-		t.innerText = i.title;
-		a.innerText = i.author;
+		t.innerText = book.title;
+		a.innerText = book.author;
 		b.innerText = "Download";
-		b.setAttribute("idBook", i.idBook);
-		b.setAttribute("onClick", directDownload);		
+		b.setAttribute("idBook", i.id_book);
+		b.addEventListener("click", directDownload);		
 		x.appendChild(t);
 		x.appendChild(a);
 		x.appendChild(b);
