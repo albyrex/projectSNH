@@ -30,7 +30,7 @@ if($bookPath === -1) {
 }
 
 header("Content-type:application/pdf");
-header("Content-Disposition:attachment;filename='book.pdf'");
+header("Content-Disposition:attachment;filename=book.pdf");
 readfile($bookPath);
 
 ?>
