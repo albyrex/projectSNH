@@ -31,7 +31,7 @@ if(SessionManager::userCanDownload($idUser, $idBook)) {
     die("{\"errorCode\": 1, \"body\": \"Already bought\"}");
 }
 
-if(!pay()) {
+if(!pay($idUser, $idBook)) {
     die("{\"errorCode\": -3, \"body\": \"Error during payment\"}");
 }
 
@@ -43,8 +43,19 @@ die("{\"errorCode\": 0, \"body\": \"Ok\"}");
   Help functions
 */
 
-function pay() {
+function pay($idUser, $idBook) {
     usleep(500);
+    $now = time();
+    $conn = getDbConnection();
+    $stmt = $conn->prepare(
+        "INSERT INTO payments(id_user,id_book,timestamp) VALUES (?,?,?)"
+    );
+    $stmt->bind_param("iii", $idUser, $idBook, $now);
+    $success = $stmt->execute();
+    $conn->close();
+    if($success === false) {
+        return false;
+    }
     return true;
 }
 
