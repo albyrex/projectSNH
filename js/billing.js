@@ -1,4 +1,4 @@
-import { doAjaxGet, doAjaxPost, createFormData } from './ajax.js';
+
 
 
 function getParams(param) {
@@ -30,7 +30,7 @@ function result(responseText) {
 	
 	let idBook = getParams("idBook");
 	if(res == 0) { //gia comprato
-		window.location.href = "/api/downloadBook.php?idBook=" + idBook;
+		window.location.href = "api/downloadBook.php?idBook=" + idBook;
 	}else if(res == 1) {  //ok lo posso comprare
 	
 	}else if(res == 2) { //non valido
@@ -52,11 +52,6 @@ function result(responseText) {
 //da fare
 function pay(ev) {
 	ev.preventDefault();
-	
 	let idBook = getParams("idBook"); 
-	let parameters =reon", value: "getBookById"},
-		{key:"idBook", value: idBook}
-		]
-    );
-    doAjaxPost("api/bookInfo.php", parameters, result);
+	
 }

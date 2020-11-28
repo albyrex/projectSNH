@@ -1,9 +1,11 @@
 <?php
+
 if ($_POST["newpwd1"] == "" || !isset($_POST["newpwd1"])) {
 	
 }else{
 	
 }
+
 ?>
 
 

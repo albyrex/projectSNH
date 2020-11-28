@@ -4,11 +4,13 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>PASSWORD RECOVERY</title>
+    <script type="application/javascript" src="./js/ajax.js"></script>
+	<script type="application/javascript" src="./js/registration.js"></script>
+	<title>REGISTRATION</title>
 </head>
 
 <body>
-	<h1>PASSWORD RECOVERY</h1>
+	<h1>REGISTRATION</h1>
 	<div id="navbar">
 		<a href="login.html">Login</a>
 		<a href="registration.html">Registration</a>
@@ -16,8 +18,14 @@
 	<br><br><br><br>
     <form>
 	
+	  <label for="username">USERNAME</label><br>
+	  <input type="text" id="username" name="username"><br><br>
+	  
 	  <label for="email">EMAIL</label><br>
 	  <input type="email" id="email" name="email"><br><br>
+	  
+	  <label for="password">PASSWORD</label><br>
+	  <input type="password" id="password" name="password"><span style="margin-left:10px" id="pwd_strength"></span><br><br>
 	  
 	  <label for="question1">QUESTION1</label><br>
 	  <input type="text" id="question1" name="question1"><br><br>
@@ -29,7 +37,7 @@
 	  <input type="text" id="question3" name="question3"><br><br>	  
 	  
 	  
-	  <button id="button_recovery">RECOVERY</button>
+	  <button id="button_registration">REGISTRATION</button>
 	  
 	</form>
 </body>

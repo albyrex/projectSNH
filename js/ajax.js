@@ -1,5 +1,3 @@
-export {doAjaxGet, doAjaxPost, createFormData};
-
 
 /*
   doAjaxGet() e doAjaxPost() sono le funzioni che gli script devono chiamare e si basano

@@ -1,4 +1,4 @@
-import { doAjaxGet, doAjaxPost, createFormData } from './ajax.js';
+
 
 
 window.addEventListener("load", function f() {
@@ -26,9 +26,9 @@ function onOperationCompleted(responseText) {
     let response = JSON.parse(responseText);
     if(response.errorCode == 0) {
 		if(response.body == 0){
-            window.location.replace("./index.html");
+            window.location.replace("index.html");
 		}else if(response.body == 1){
-			window.location.replace("./admin.html");
+			window.location.replace("admin.html");
 		}
 	}else if(response.errorCode == -2){
 		alert("User already logged, please logout if you want to login again");

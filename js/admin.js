@@ -1,4 +1,4 @@
-import { doAjaxGet, doAjaxPost, createFormData } from './ajax.js';
+
 
 
 window.addEventListener("load", function f() {	    
@@ -25,11 +25,13 @@ function populateBook(responseText) {
 	
 	let listbook = response.body.bookList;
 	
+	clearTable(booklist);
+	
 	for (var i = 0; i < listbook.length; ++i) {
 		var x = document.createElement("tr"); 
 		var t = document.createElement("td"); 
 		var a = document.createElement("td");
-		var b = document.createElement("button")
+		var b = document.createElement("button");
 		
 		t.innerText = = i.title;
 		a.innerText = i.author;
@@ -74,4 +76,12 @@ function removeBook(ev) {
 			return;
 		}
 	});
+}
+
+
+function clearTable(tab) {
+	while(tab.children.length > 1) {
+		var lastchild = tab.children[tab.children.length -1];
+		tab.removeChild(lastchild);
+	}
 }

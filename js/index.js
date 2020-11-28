@@ -1,4 +1,4 @@
-import { doAjaxGet, doAjaxPost, createFormData } from './ajax.js';
+
 
 
 window.addEventListener("load", function f() {	    
@@ -51,13 +51,14 @@ function goToBilling(ev) {
 }
 
 
-function searchBook(str) {
+function seachBook(ev) {
 	let parameters = createFormData(
         [
-		{key:"function", value: "...."}
+		{key:"function", value: "searchByTitleOrAuthor"},
+		{key:"searchString", value: ev.target.value},
 		]
     );
-    doAjaxPost("api/bookInfo.php", parameters, searchBook);	
+    doAjaxPost("api/bookInfo.php", parameters, populateBook);
 }
 
 

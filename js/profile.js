@@ -1,4 +1,4 @@
-import { doAjaxGet, doAjaxPost, createFormData } from './ajax.js';
+
 
 window.addEventListener("load", function f() {	    
     doAjaxPost("api/userStatus.php", [], setUsername);
@@ -113,7 +113,7 @@ function populateBookDownload(responseText) {
 
 function directDownload(ev) {
 	var idBook = ev.target.getAttribute("idBook");
-	window.location.href = "downloadBood.php?idBook=" + idBook
+	window.location.href = "api/downloadBood.php?idBook=" + idBook
 }
 
 

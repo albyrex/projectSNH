@@ -1,4 +1,4 @@
-import { doAjaxGet, doAjaxPost, createFormData } from './ajax.js';
+
 
 
 window.addEventListener("load", function f() {
@@ -50,7 +50,7 @@ function onOperationCompleted(responseText) {
     let response = JSON.parse(responseText);
     if(response.errorCode == 0 || response.errorCode == -2) {
 		if(response.body == 0){
-            window.location.replace("./login.html");
+            window.location.replace("login.html");
 		}
 	}else if(response.errorCode == -400){
 		alert("Error: missing parameters");
