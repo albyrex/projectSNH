@@ -121,7 +121,7 @@ class SessionManager {
         }
 
         // Check if the old password is wrong
-        if(!password_verify($password, $row["password"])) {
+        if(!password_verify($oldpwd, $row["password"])) {
             $conn->close();
             return $wrongPassword;
         }
