@@ -74,7 +74,7 @@ function pay(ev) {
 			return;
 		} else if(response.errorCode == 0) {
 			alert("Book bought correctly");
-			window.location.href = "api/downloadBook.php?idBook" + idBook;
+			window.location.href = "api/downloadBook.php?idBook=" + idBook;
 			return;
 		}
 	});
