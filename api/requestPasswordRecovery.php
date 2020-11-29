@@ -13,7 +13,7 @@ include_once "sessionManager.php";
 include_once "utils.php";
 
 
-$answers = parseAnswers(checkPostParameterOrDie("answers"))
+$answers = parseAnswers(checkPostParameterOrDie("answers"));
 $email = checkPostParameterOrDie("email");
 
 if(invalidEmail($email)) {

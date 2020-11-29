@@ -13,13 +13,12 @@ function recovery(ev) {
 	let question1_ = question1.value;
 	let question2_ = question2.value;
 	let question3_ = question3.value;
-	
+
 	let answers_ = JSON.stringify([question1_, question2_, question3_]);
-	
+
 	let parameters = createFormData(
         [
 		{key:"email", value: email_},
-		{key:"password", value: password_},
 		{key:"answers", value: answers_}
 		]
     );
@@ -30,4 +29,10 @@ function recovery(ev) {
 
 function onOperationCompleted(responseText) {
     let response = JSON.parse(responseText);
+	if(response.errorCode != 0) {
+		alert("Something went wrong. Check the email and the security answers you had inserted");
+		return;
+	}
+	alert("You request has been sent correctly. Check your email inbox.");
+	window.location.href = "login.html";
 }

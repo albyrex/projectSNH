@@ -179,7 +179,8 @@ class SessionManager {
         $stmt = $conn->prepare(
             "UPDATE users SET password = ? WHERE email = ?"
         );
-        $stmt->bind_param("ss", hashPassword($newpwd), $email);
+        $hashedPassword = SessionManager::hashPassword($newpwd);
+        $stmt->bind_param("ss", $hashedPassword, $email);
         $stmt->execute();
 
         // Remove the password recovery request
@@ -384,9 +385,9 @@ class SessionManager {
         $now = time();
         $token = bin2hex(random_bytes(16));
         $stmt = $conn->prepare(
-            "INSERT INTO password_recovery_requests(id_user,password_recovery_token,timestamp) VALUES (?,?,?)"
+            "INSERT INTO password_recovery_requests(id_user,password_recovery_token,password_recovery_timestamp) VALUES (?,?,?)"
         );
-        $stmt->bind_param("isi", $idUser, $tonen, $now);
+        $stmt->bind_param("isi", $idUser, $token, $now);
         $stmt->execute();
         $conn->close();
 

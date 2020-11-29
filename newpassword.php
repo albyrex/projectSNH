@@ -10,8 +10,8 @@ include_once "./api/sessionManager.php";
 include_once "./api/utils.php";
 
 if(!isset($_POST["newpwd1"]) || $_POST["newpwd1"] == "") {
-	$token = checkGetParameterOrDie($token);
-	$email = checkGetParameterOrDie($email);
+	$token = checkGetParameterOrDie("token");
+	$email = checkGetParameterOrDie("email");
 	if(invalidEmail($email)) {
 		header("HTTP/1.0 400 Bad Request");
 		die("Error: invalid request");
@@ -29,6 +29,22 @@ if(!isset($_POST["newpwd1"]) || $_POST["newpwd1"] == "") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <link rel="stylesheet" href="css/style.css">
 	<title>NEW PASSWORD</title>
+	<script type="application/javascript" src="./js/zxcvbn.js"></script>
+	<script type="application/javascript">
+		window.addEventListener("load", function() {
+			newpwd1.addEventListener("keydown", function() {
+				let res = zxcvbn(newpwd1.value);
+				pwd_strength.innerText = "Strength: " + res.score;
+			});
+			submit_pwd_recovery.onclick = function(ev) {
+				let res = zxcvbn(newpwd1.value);
+				if(res.score < 4) {
+					alert("The password is too weak");
+					ev.preventDefault();
+				}
+			}
+		});
+	</script>
 </head>
 
 <body>
@@ -36,10 +52,10 @@ if(!isset($_POST["newpwd1"]) || $_POST["newpwd1"] == "") {
 	<br><br><br><br>
     <form method="post" action="newpassword.php">
 	  	<label for="newpwd1">NEW PASSWORD</label><br>
-	  	<input type="password" id="newpwd1" name="newpwd1"><br><br>
+	  	<input type="password" id="newpwd1" name="newpwd1"><span style="margin-left:10px" id="pwd_strength"></span><br><br>
 		<label for="newpwd2">REPEAT NEW PASSWORD</label><br>
 	  	<input type="password" id="newpwd2" name="newpwd2"><br><br>
-	  	<input type="submit" value="CHANGE YOUR PASSWORD">
+	  	<input type="submit" value="CHANGE YOUR PASSWORD" id="submit_pwd_recovery">
 		<input type="text" style="display:none" name="token" value="<?php echo $token; ?>">
 		<input type="text" style="display:none" name="email" value="<?php echo $email; ?>">
 	</form>
@@ -67,14 +83,30 @@ if(invalidEmail($email)) {
 	die("Error: invalid request");
 }
 
-$operationResult = changeUserPasswordByPasswordRecoveryToken($email, $token, $newpwd1);
+$operationResult = SessionManager::changeUserPasswordByPasswordRecoveryToken($email, $token, $newpwd1);
 
 if($operationResult != $operationSuccessful) {
 	header("HTTP/1.0 400 Bad Request");
 	die("Error: invalid request");
 }
 
-// If everything is ok, redirect the user to the login page
-header("location: login.html");
-
 ?>
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+	<title>PASSWORD RECOVERED</title>
+	<script type="application/javascript">
+		window.addEventListener("load", function() {
+			alert("Password changed correctly! You will be redirected to the login page.");
+			window.location.href = "login.html";
+		});
+	</script>
+</head>
+
+<body></body>
+
+</html>
