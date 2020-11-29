@@ -19,6 +19,8 @@ $operationSuccessful = 0;
 $userUnderBruteforceProtection = -3;
 $emailNotVerified = -4;
 $emailAlreadyVerified = -5;
+$invalidRequest = -6;
+$genericError = -100;
 
 $loginBruteforceProtectionInterval = 600; //10 minutes
 $maxConsecutiveFailedLoginCount = 5;
@@ -71,9 +73,9 @@ class SessionManager {
     */
     public static function createUser($email, $username, $password, $answers) {
         global $operationSuccessful;
-		
+
 		include_once "dbAccess.php";
-		 
+
         $hashedPassword = SessionManager::hashPassword($password);
 
         $conn = getDbConnection();
@@ -142,15 +144,17 @@ class SessionManager {
         return $operationSuccessful;
     }
 
-    public static function changeUserPasswordByToken($email, $token, $newpwd) {
-        global $userNotFound, $wrongPassword, $operationSuccessful;
+    public static function changeUserPasswordByPasswordRecoveryToken($email, $token, $newpwd) {
+        global $invalidRequest, $wrongPassword, $operationSuccessful;
 
         include_once "dbAccess.php";
 
-        // Retrive the user from the database
+        // Retrive the recovery request from the database
         $conn = getDbConnection();
         $stmt = $conn->prepare(
-            "SELECT email_verification_token FROM users WHERE email = ?"
+            "SELECT id_user, password_recovery_token
+            FROM password_recovery_requests
+            WHERE id_user = (SELECT id_user FROM users WHERE email = ?)"
         );
         $stmt->bind_param("s", $email);
         $stmt->execute();
@@ -159,13 +163,14 @@ class SessionManager {
         $result = $stmt->get_result();
         if($result->num_rows > 0) {
             $row = $result->fetch_assoc();
+            $idUser = $row["id_user"];
         } else {
             $conn->close();
-            return $userNotFound;
+            return $invalidRequest;
         }
 
         // Check if the token is wrong
-        if($row["email_verification_token"] != $token) {
+        if($row["password_recovery_token"] != $token) {
             $conn->close();
             return $wrongPassword;
         }
@@ -175,6 +180,13 @@ class SessionManager {
             "UPDATE users SET password = ? WHERE email = ?"
         );
         $stmt->bind_param("ss", hashPassword($newpwd), $email);
+        $stmt->execute();
+
+        // Remove the password recovery request
+        $stmt = $conn->prepare(
+            "DELETE FROM password_recovery_requests WHERE id_user = ?"
+        );
+        $stmt->bind_param("i", $idUser);
         $stmt->execute();
         $conn->close();
 
@@ -244,13 +256,15 @@ class SessionManager {
         return $operationSuccessful;
     }
 
-    public static function validToken($email, $token) {
+    public static function validPasswordRecoveryToken($email, $token) {
         include_once "dbAccess.php";
 
         // Retrive the user given his email and his token
         $conn = getDbConnection();
         $stmt = $conn->prepare(
-            "SELECT id_user FROM users WHERE email = ? AND token = ?"
+            "SELECT u.id_user
+            FROM users u NATURAL JOIN password_recovery_requests prr
+            WHERE u.email = ? AND prr.password_recovery_token = ?"
         );
         $stmt->bind_param("ss", $email, $token);
         $stmt->execute();
@@ -327,6 +341,62 @@ class SessionManager {
         return $operationSuccessful;
     }
 
+    public static function createPasswordRecoveryRequest($email, $answers) {
+        global $userNotFound, $operationSuccessful, $genericError;
+
+        include_once "dbAccess.php";
+
+        // Retrive the user from the database
+        $conn = getDbConnection();
+        $stmt = $conn->prepare(
+            "SELECT id_user FROM users WHERE email = ? AND answers = ?"
+        );
+        $stmt->bind_param("ss", $email, $answers);
+        $stmt->execute();
+
+        // Check if it really exists
+        $result = $stmt->get_result();
+        if($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $idUser = $row["id_user"];
+        } else {
+            $conn->close();
+            return $userNotFound;
+        }
+
+        // Check if a valid password recovery request is already present
+        $stmt = $conn->prepare(
+            "SELECT * FROM password_recovery_requests WHERE id_user = ?"
+        );
+        $stmt->bind_param("i", $idUser);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if($result->num_rows > 0) {
+            // If yes, we have to delete it
+            $stmt = $conn->prepare(
+                "DELETE FROM password_recovery_requests WHERE id_user = ?"
+            );
+            $stmt->bind_param("i", $idUser);
+            $stmt->execute();
+        }
+
+        // Create a new password recovery request
+        $now = time();
+        $token = bin2hex(random_bytes(16));
+        $stmt = $conn->prepare(
+            "INSERT INTO password_recovery_requests(id_user,password_recovery_token,timestamp) VALUES (?,?,?)"
+        );
+        $stmt->bind_param("isi", $idUser, $tonen, $now);
+        $stmt->execute();
+        $conn->close();
+
+        // Send the email
+        if(SessionManager::sendPasswordRecoveryRequestEmail($email, $token))
+            return $operationSuccessful;
+        else
+            return $genericError;
+    }
+
 
     /*
        Private functions
@@ -365,6 +435,31 @@ class SessionManager {
             $mail->addAddress($email);
             $mail->Subject = "E-mail verification for bookshop";
             $mail->Body = "Your verification link is $verificationUrl";
+            $mail->IsSMTP();
+            $mail->SMTPSecure = "ssl";
+            $mail->Host = "ssl://smtp.gmail.com";
+            $mail->SMTPAuth = true;
+            $mail->Port = 465;
+            $mail->Username = "ebookunipi@gmail.com";
+            $mail->Password = "phpmailertest*";
+            $mail->send();
+            return true;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
+    private static function sendPasswordRecoveryRequestEmail($email, $token) {
+        require "./lib/PHPMailer/PHPMailer.php";
+        require "./lib/PHPMailer/SMTP.php";
+
+        $url = "https://localhost/newpassword.php?token=$token&email=$email";
+        try {
+            $mail = new PHPMailer\PHPMailer\PHPMailer;
+            $mail->setFrom("noreply@bookshop.com");
+            $mail->addAddress($email);
+            $mail->Subject = "Password recovery request for bookshop account";
+            $mail->Body = "You can reset your password clicking on the following link: $url";
             $mail->IsSMTP();
             $mail->SMTPSecure = "ssl";
             $mail->Host = "ssl://smtp.gmail.com";

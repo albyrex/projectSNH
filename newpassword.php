@@ -6,8 +6,8 @@
   by email can let the user access correctly this page.
 */
 
-include_once "sessionManager.php";
-include_once "utils.php";
+include_once "./api/sessionManager.php";
+include_once "./api/utils.php";
 
 if(!isset($_POST["newpwd1"]) || $_POST["newpwd1"] == "") {
 	$token = checkGetParameterOrDie($token);
@@ -16,7 +16,7 @@ if(!isset($_POST["newpwd1"]) || $_POST["newpwd1"] == "") {
 		header("HTTP/1.0 400 Bad Request");
 		die("Error: invalid request");
 	}
-	if(!SessionManager::validToken($email, $token)) {
+	if(!SessionManager::validPasswordRecoveryToken($email, $token)) {
 		header("HTTP/1.0 400 Bad Request");
 		die("Error: invalid request");
 	}
@@ -67,7 +67,7 @@ if(invalidEmail($email)) {
 	die("Error: invalid request");
 }
 
-$operationResult = changeUserPasswordByToken($email, $token, $newpwd1);
+$operationResult = changeUserPasswordByPasswordRecoveryToken($email, $token, $newpwd1);
 
 if($operationResult != $operationSuccessful) {
 	header("HTTP/1.0 400 Bad Request");

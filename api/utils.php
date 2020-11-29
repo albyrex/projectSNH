@@ -103,13 +103,13 @@ function parseAnswers($answers) {
     $obj = json_decode(strtolower($answers));
     if(count($obj) != 3) {
         header("HTTP/1.0 400 Bad Request");
-        die("{\"errorCode\": -6, \"body\": \"Bad request: invalid answers\"}");
+        die("{\"errorCode\": -400, \"body\": \"Bad request\"}");
     }
     $arr = array();
     for ($i = 0; $i < 3; $i++) {
     	if(!is_string($obj[$i])) {
             header("HTTP/1.0 400 Bad Request");
-            die("{\"errorCode\": -6, \"body\": \"Bad request: invalid answers\"}");
+            die("{\"errorCode\": -400, \"body\": \"Bad request\"}");
         }
     	array_push($arr,(string)$obj[$i]);
     }
