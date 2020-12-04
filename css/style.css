@@ -18,3 +18,7 @@ tr:nth-child(even) {
 #navbar a {
 	margin-right: 2px;
 }
+
+td:button {
+	height: 100%;
+}
