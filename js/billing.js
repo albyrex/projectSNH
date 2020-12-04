@@ -1,10 +1,10 @@
 function getParams(param) {
-	let val = window.location.search.split(param + '=')[1]	
+	let val = window.location.search.split(param + '=')[1]
 	return val;
 }
 
 window.addEventListener("load", function f() {
-	let idBook = getParams("idBook"); 
+	let idBook = getParams("idBook");
 	let parameters = createFormData(
         [
 		{key:"function", value: "getBookById"},
@@ -22,9 +22,9 @@ function result(responseText) {
 		alert("Bad Request");
 		return;
 	}
-	
+
 	let res = response.body.icanbuy;
-	
+
 	let idBook = getParams("idBook");
 	if(res == 0) { //gia comprato
 		window.location.href = "api/downloadBook.php?idBook=" + idBook;
@@ -33,7 +33,7 @@ function result(responseText) {
 		let title_ = response.body.book.title;
 		let author_ = response.body.book.author;
 
-		price.innerText = price_;
+		price.innerText = price_  + "€";
 		title.innerText = title_;
 		author.innerText = author_;
 
@@ -47,14 +47,14 @@ function result(responseText) {
 //da fare
 function pay(ev) {
 	ev.preventDefault();
-	let idBook = getParams("idBook"); 
+	let idBook = getParams("idBook");
 	let parameters = createFormData(
         [
 		{key:"idBook", value: idBook},
 		{key:"cardname", value: cardname.value},
 		{key:"cardnumber", value: cardnumber.value},
 		{key:"cvv", value: cvv.value},
-		{key:"monthyear", value: monthyear.value}	
+		{key:"monthyear", value: monthyear.value}
 		]
     );
     doAjaxPost("api/buy.php", parameters, function(responseText){

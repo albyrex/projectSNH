@@ -57,7 +57,7 @@ function populateBookTopDownload(responseText) {
 
 		t.innerText = book.title;
 		a.innerText = book.author;
-		b.innerText = book.price + " - Buy";
+		b.innerText = book.price  + "€" + " - Buy";
 		b.setAttribute("idBook", book.id_book);
 		b.addEventListener("click", goToBilling);
 		x.appendChild(t);
@@ -99,7 +99,7 @@ let response = JSON.parse(responseText);
 
 		t.innerText = book.title;
 		a.innerText = book.author;
-		b.innerText = book.price + " - Buy";
+		b.innerText = book.price  + "€" + " - Buy";
 		b.setAttribute("idBook", book.id_book);
 		b.addEventListener("click", goToBilling);
 		x.appendChild(t);

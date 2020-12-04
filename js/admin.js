@@ -39,7 +39,7 @@ function populateBook(responseText) {
 
 		t.innerText = book.title;
 		a.innerText = book.author;
-		p.innerText = book.price;
+		p.innerText = book.price + "€";
 		b.innerText = "Remove";
 		b.setAttribute("idBook", book.id_book);
 		b.addEventListener("click", removeBook);
