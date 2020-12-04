@@ -54,7 +54,7 @@ function topDownloaded() {
         LIMIT $TOP_DOWNLOADED_SIZE"
     );
     while($row = $r->fetch_object()) {
-        array_push($result->body->bookList, $row);
+        array_push($result->body->bookList, sanitizeBookRow($row));
     }
     $conn->close();
 
@@ -84,7 +84,7 @@ function getBookById() {
     $r = $stmt->get_result();
     if($r->num_rows > 0) {
         $row = $r->fetch_assoc();
-        $result->body->book = $row;
+        $result->body->book = sanitizeBookRow($row);
     } else {
         header("HTTP/1.0 400 Bad Request");
         die("{\"errorCode\": -400, \"body\": \"Bad request\"}");
@@ -132,7 +132,7 @@ function getUserBooks() {
     }
     $r = $stmt->get_result();
     while($row = $r->fetch_object()) {
-        array_push($result->body->bookList, $row);
+        array_push($result->body->bookList, sanitizeBookRow($row));
     }
     $conn->close();
 
@@ -175,11 +175,20 @@ function searchByTitleOrAuthor() {
     $r = $stmt->get_result();
 
     while($row = $r->fetch_object()) {
-        array_push($result->body->bookList, $row);
+        array_push($result->body->bookList, sanitizeBookRow($row));
     }
     $conn->close();
 
     echo json_encode($result);
+}
+
+
+/*
+  Utility Functions
+*/
+function sanitizeBookRow($row) {
+    $row["title"] = filterHtmlAndQuotes($row["title"]);
+    $row["author"] = filterHtmlAndQuotes($row["author"]);
 }
 
 ?>

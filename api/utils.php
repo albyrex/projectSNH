@@ -68,6 +68,19 @@ function invalidEmail($email) {
     return (strpos($email, "@", $pos+1) != false);
 }
 
+/*
+  Filter htmlentities but not ' nor "
+*/
+function filterHtml($string) {
+    return htmlentities($string, ENT_NOQUOTES | ENT_SUBSTITUTE);
+}
+
+/*
+  Filter htmlentities including ' and "
+*/
+function filterHtmlAndQuotes($string) {
+    return htmlentities($string, ENT_QUOTES | ENT_SUBSTITUTE);
+}
 
 
 /*
@@ -114,28 +127,6 @@ function parseAnswers($answers) {
     	array_push($arr,(string)$obj[$i]);
     }
     return json_encode($arr);
-}
-
-
-
-/*
-
-  Vecchie funzioni. Rimuovere?
-
-*/
-function filterHtml($string) {
-    //Does not filter ' nor "
-    return htmlentities($string, ENT_NOQUOTES | ENT_SUBSTITUTE);
-}
-
-function filterSQLQueryAndHtml($string) {
-    //Does not filter ' nor "
-    return filterSQLQuery(htmlentities($string, ENT_NOQUOTES | ENT_SUBSTITUTE));
-}
-
-function filterHtmlAndQuotes($string) {
-    //Does filter ' and "
-    return htmlentities($string, ENT_QUOTES | ENT_SUBSTITUTE);
 }
 
 ?>
