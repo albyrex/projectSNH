@@ -98,7 +98,7 @@ function setUsername(responseText) {
         return;
     }
 
-    username.innerText = response.body.username;
+    username.innerText = response.body.email;
 }
 
 

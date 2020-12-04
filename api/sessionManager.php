@@ -4,8 +4,8 @@
   Service page to manage the user session.
   A user session is composed by:
    - id_user
-   - username
-   - admin
+   - email
+   - admin (admin flag)
 */
 
 if(session_status() == PHP_SESSION_NONE) {
@@ -56,10 +56,6 @@ class SessionManager {
         return $_SESSION["email"];
     }
 
-    public static function getUsername() {
-        return $_SESSION["username"];
-    }
-
     public static function closeSession() {
         // session_start();
         // remove all session variables
@@ -73,7 +69,7 @@ class SessionManager {
         - 0 in case of sucess
         - -1 in case of failure if the email is already in use
     */
-    public static function createUser($email, $username, $password, $answers) {
+    public static function createUser($email, $password, $answers) {
         global $operationSuccessful;
 
 		include_once "dbAccess.php";
@@ -81,8 +77,8 @@ class SessionManager {
         $hashedPassword = SessionManager::hashPassword($password);
 
         $conn = getDbConnection();
-        $stmt = $conn->prepare("INSERT INTO users(email,username,password,answers) VALUES (?,?,?,?)");
-        $stmt->bind_param("ssss", $email, $username, $hashedPassword, $answers);
+        $stmt = $conn->prepare("INSERT INTO users(email,password,answers) VALUES (?,?,?)");
+        $stmt->bind_param("ssss", $email, $hashedPassword, $answers);
         $success = $stmt->execute();
         $conn->close();
         if($success === false) {
@@ -277,7 +273,6 @@ class SessionManager {
         }
         $_SESSION["id_user"] = (int)$row["id_user"];
         $_SESSION["email"] = $row["email"];
-        $_SESSION["username"] = $row["username"];
         $_SESSION["admin"] = (int)$row["admin"];
         return $operationSuccessful;
     }

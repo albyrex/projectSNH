@@ -26,7 +26,6 @@ if(!SessionManager::isLogged()) {
         $response->body->status = 0;
     $response->body->idUser = SessionManager::getIdUser();
     $response->body->email = SessionManager::getEmail();
-    $response->body->username = SessionManager::getUsername();
 }
 
 echo json_encode($response);
