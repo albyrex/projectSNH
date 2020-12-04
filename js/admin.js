@@ -3,7 +3,7 @@ window.addEventListener("load", function f() {
         let response = JSON.parse(responseText);
         if (response.body.status != 1) {
             alert("No admin");
-            window.location.href = "index.html";
+            window.location.href = "index.php";
             return;
         }
 

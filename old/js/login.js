@@ -6,7 +6,7 @@ let ui = {
 }
 
 window.addEventListener("load", function f() {
-	
+
 	ui.email_input = document.getElementById("email");
 	ui.password_input = document.getElementById("password");
     button_login.addEventListener("click", onButtonLoginClicked);
@@ -18,9 +18,9 @@ function onOperationCompleted(responseText) {
     let response = JSON.parse(responseText);
     if(response.errorCode == 0 || response.errorCode == -2) {
 		if(response.body == 0){
-            window.location.replace("./index.html");
+            window.location.replace("index.php");
 		}else if(response.body == 1){
-			window.location.replace("./admin.html");
+			window.location.replace("admin.html");
 		}
 	}else if(response.errorCode == -400){ //mancano parametri
 		alert("Errore: parametri mancanti o non validi");

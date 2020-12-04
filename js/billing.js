@@ -45,7 +45,7 @@ function result(responseText) {
 
         button_pay.addEventListener("click", pay);
     } else { //non valido
-        window.location.href = "index.html";
+        window.location.href = "index.php";
     }
 }
 

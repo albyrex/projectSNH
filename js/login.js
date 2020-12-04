@@ -29,7 +29,7 @@ function onOperationCompleted(responseText) {
     let response = JSON.parse(responseText);
     if (response.errorCode == 0) {
         if (response.body == 0) {
-            window.location.replace("index.html");
+            window.location.replace("index.php");
         } else if (response.body == 1) {
             window.location.replace("admin.html");
         }

@@ -91,7 +91,7 @@ function goToBilling(ev) {
     } else if (icanbuy == 1) { //ok devo comprare
         window.location.href = "./billing.html?idBook=" + idBook;
     } else { //non valido
-        window.location.href = "index.html";
+        window.location.href = "index.php";
     }
 }
 
