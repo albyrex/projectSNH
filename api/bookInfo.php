@@ -24,13 +24,13 @@ if(!SessionManager::isLogged()) {
 }
 
 $function = checkPostParameterOrDie("function");
-if($function == "topDownloaded")
+if($function === "topDownloaded")
     topDownloaded();
-else if($function == "getBookById")
+else if($function === "getBookById")
     getBookById();
-else if($function == "getUserBooks")
+else if($function === "getUserBooks")
     getUserBooks();
-else if($function == "searchByTitleOrAuthor")
+else if($function === "searchByTitleOrAuthor")
     searchByTitleOrAuthor();
 else {
     header("HTTP/1.0 400 Bad Request");
@@ -83,7 +83,7 @@ function getBookById() {
     }
     $r = $stmt->get_result();
     if($r->num_rows > 0) {
-        $row = $r->fetch_assoc();
+        $row = $r->fetch_object();
         $result->body->book = sanitizeBookRow($row);
     } else {
         header("HTTP/1.0 400 Bad Request");
@@ -187,8 +187,12 @@ function searchByTitleOrAuthor() {
   Utility Functions
 */
 function sanitizeBookRow($row) {
-    $row["title"] = filterHtmlAndQuotes($row["title"]);
-    $row["author"] = filterHtmlAndQuotes($row["author"]);
+    $book = new stdClass();
+    $book->id_book = $row->id_book;
+    $book->title = filterHtmlAndQuotes($row->title);
+    $book->author = filterHtmlAndQuotes($row->author);
+    $book->price = $row->price;
+    return $book;
 }
 
 ?>

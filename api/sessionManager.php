@@ -24,6 +24,8 @@ $genericError = -100;
 
 $loginBruteforceProtectionInterval = 600; //10 minutes
 $maxConsecutiveFailedLoginCount = 5;
+$changePasswordBruteforceInterval = 600; //10 minuts
+$maxConsecutiveFailedPasswordChanges = 5;
 
 
 class SessionManager {
@@ -35,7 +37,7 @@ class SessionManager {
     public static function isAdmin() {
         if(!isset($_SESSION["admin"]))
             return false;
-        return $_SESSION["admin"] == 1;
+        return $_SESSION["admin"] === 1;
     }
 
     public static function hashPassword($password) {
@@ -108,12 +110,17 @@ class SessionManager {
 
     public static function changeUserPassword($idUser, $oldpwd, $newpwd) {
         global $userNotFound, $wrongPassword, $operationSuccessful;
+        global $changePasswordBruteforceInterval, $userUnderBruteforceProtection;
+        global $maxConsecutiveFailedPasswordChanges;
 
         include_once "dbAccess.php";
 
         // Retrive the user from the database
         $conn = getDbConnection();
-        $stmt = $conn->prepare("SELECT * FROM users WHERE id_user = ?");
+        $stmt = $conn->prepare(
+            "SELECT password, last_password_change_attempt, consecutive_failed_password_changes
+            FROM users WHERE id_user = ?"
+        );
         $stmt->bind_param("i", $idUser);
         $stmt->execute();
 
@@ -121,16 +128,34 @@ class SessionManager {
         $result = $stmt->get_result();
         if($result->num_rows > 0) {
             $row = $result->fetch_assoc();
+            $lpca = (int)$row["last_password_change_attempt"];
+            $cfpg = (int)$row["consecutive_failed_password_changes"];
         } else {
             $conn->close();
             return $userNotFound;
         }
 
+        // Check last_password_change_attempt
+        $now = time();
+        if(
+            $cfpg >= $maxConsecutiveFailedPasswordChanges &&
+            $lpca !== 0 &&
+            $lpca + $changePasswordBruteforceInterval > $now
+        ) {
+            SessionManager::updatePasswordChangeInfo($conn,$idUser,$cfpg,$now);
+            $conn->close();
+            return $userUnderBruteforceProtection;
+        }
+
         // Check if the old password is wrong
         if(!password_verify($oldpwd, $row["password"])) {
+            SessionManager::updatePasswordChangeInfo($conn,$idUser,$cfpg+1,$now);
             $conn->close();
             return $wrongPassword;
         }
+
+        // The user is allowed to change his password
+        SessionManager::updatePasswordChangeInfo($conn,$idUser,0,0);
 
         // Update the password in the database
         $stmt = $conn->prepare(
@@ -170,7 +195,7 @@ class SessionManager {
         }
 
         // Check if the token is wrong
-        if($row["password_recovery_token"] != $token) {
+        if($row["password_recovery_token"] !== $token) {
             $conn->close();
             return $wrongPassword;
         }
@@ -217,7 +242,7 @@ class SessionManager {
         }
 
         // Check if the email is verified
-        if($row["verified_email"] != 1) {
+        if((int)$row["verified_email"] !== 1) {
             $conn->close();
             return $emailNotVerified;
         }
@@ -228,7 +253,7 @@ class SessionManager {
         $consecutiveFailedLoginCount = (int)$row["consecutive_failed_login_count"];
         if(
             $consecutiveFailedLoginCount >= $maxConsecutiveFailedLoginCount &&
-            $failedLoginTimestamp != 0 &&
+            $failedLoginTimestamp !== 0 &&
             $failedLoginTimestamp + $loginBruteforceProtectionInterval > $now
         ) {
             SessionManager::updateDbLoginInfo($conn, $email, $consecutiveFailedLoginCount+1, $now);
@@ -250,10 +275,10 @@ class SessionManager {
         if(session_status() == PHP_SESSION_NONE) {
             session_start();
         }
-        $_SESSION["id_user"] = $row["id_user"];
+        $_SESSION["id_user"] = (int)$row["id_user"];
         $_SESSION["email"] = $row["email"];
         $_SESSION["username"] = $row["username"];
-        $_SESSION["admin"] = $row["admin"];
+        $_SESSION["admin"] = (int)$row["admin"];
         return $operationSuccessful;
     }
 
@@ -326,7 +351,7 @@ class SessionManager {
         }
 
         // Check if it is already verified
-        if($row["verified_email"] != 0) {
+        if((int)$row["verified_email"] !== 0) {
             $conn->close();
             return $emailAlreadyVerified;
         }
@@ -408,6 +433,14 @@ class SessionManager {
             "UPDATE users SET consecutive_failed_login_count = ?, failed_login_timestamp = ? WHERE BINARY email = ?"
         );
         $stmt->bind_param("iis", $consecutiveFailedLoginCount, $failedLoginTimestamp, $email);
+        $stmt->execute();
+    }
+
+    private static function updatePasswordChangeInfo($conn, $idUser, $consecutiveFailedPasswordChanges, $lastPasswordChangeAttempt) {
+        $stmt = $conn->prepare(
+            "UPDATE users SET consecutive_failed_password_changes = ?, last_password_change_attempt = ? WHERE id_user = ?"
+        );
+        $stmt->bind_param("iii", $consecutiveFailedPasswordChanges, $lastPasswordChangeAttempt, $idUser);
         $stmt->execute();
     }
 

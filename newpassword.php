@@ -73,7 +73,7 @@ $newpwd2 = checkPostParameterOrDie("newpwd2");
 $token = checkPostParameterOrDie("token");
 $email = checkPostParameterOrDie("email");
 
-if($newpwd1 != $newpwd2) {
+if($newpwd1 !== $newpwd2) {
 	header("HTTP/1.0 400 Bad Request");
 	die("Error: the two passwords do not correspond");
 }
@@ -85,7 +85,7 @@ if(invalidEmail($email)) {
 
 $operationResult = SessionManager::changeUserPasswordByPasswordRecoveryToken($email, $token, $newpwd1);
 
-if($operationResult != $operationSuccessful) {
+if($operationResult !== $operationSuccessful) {
 	header("HTTP/1.0 400 Bad Request");
 	die("Error: invalid request");
 }

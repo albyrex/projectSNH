@@ -65,7 +65,7 @@ function invalidEmail($email) {
     $pos = strpos($email, "@");
     if($pos === false || $pos === 0 || $pos === (strlen($email)-1))
         return true;
-    return (strpos($email, "@", $pos+1) != false);
+    return (strpos($email, "@", $pos+1) !== false);
 }
 
 /*

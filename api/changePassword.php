@@ -19,7 +19,7 @@ $newpwd = checkPostParameterOrDie("newpwd");
 
 $operationResult = SessionManager::changeUserPassword(SessionManager::getIdUser(), $oldpwd, $newpwd);
 
-if($operationResult != $operationSuccessful) {
+if($operationResult !== $operationSuccessful) {
     header("HTTP/1.0 400 Bad Request");
     die("{\"errorCode\": -4, \"body\": \"Something went wrong\"}");
 }
