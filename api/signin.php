@@ -31,7 +31,7 @@ if(invalidEmail($email)) {
 
 $success = SessionManager::createUser($email, $username, $password, $answers);
 
-if($success != 0) {
+if($success !== 0) {
     die("{\"errorCode\": -1, \"body\": \"Error: email already in use\"}");
 }
 

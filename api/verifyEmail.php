@@ -18,7 +18,7 @@ if(invalidEmail($email)) {
 
 $operationResult = SessionManager::verifyEmail($email, $token);
 
-if($operationResult != $operationSuccessful) {
+if($operationResult !== $operationSuccessful) {
     die("Something went wrong");
 }
 

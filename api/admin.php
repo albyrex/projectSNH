@@ -35,9 +35,9 @@ if(!$DEBUG_MODE) {
 
 
 $function = checkPostParameterOrDie("function");
-if($function == "addBook")
+if($function === "addBook")
     addBook();
-else if($function == "removeBookById")
+else if($function === "removeBookById")
     removeBookById();
 else {
     header("HTTP/1.0 400 Bad Request");

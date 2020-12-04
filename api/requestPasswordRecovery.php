@@ -23,7 +23,7 @@ if(invalidEmail($email)) {
 
 $operationResult = SessionManager::createPasswordRecoveryRequest($email, $answers);
 
-if($operationResult != $operationSuccessful) {
+if($operationResult !== $operationSuccessful) {
     header("HTTP/1.0 400 Bad Request");
     die("{\"errorCode\": -400, \"body\": \"Bad request\"}");
 }
