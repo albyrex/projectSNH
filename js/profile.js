@@ -1,6 +1,6 @@
 
 
-window.addEventListener("load", function f() {	    
+window.addEventListener("load", function f() {
     doAjaxPost("api/userStatus.php", [], setUsername);
 	let parameters = createFormData(
         [
@@ -8,7 +8,7 @@ window.addEventListener("load", function f() {
 		]
     );
     doAjaxPost("api/bookInfo.php", parameters, populateBookDownload);
-	
+
 	doAjaxPost("api/userStatus.php", [], function(responseText) {
 		let response = JSON.parse(responseText);
 		if(response.body.status == 1) {
@@ -21,10 +21,10 @@ window.addEventListener("load", function f() {
 		lout.innerText = "Logout";
 		lout.href = "javascript:logout()";
 		navbar.appendChild(lout);
-	});	
-	
+	});
+
 	button_changepwd.addEventListener("click", changePassword);
-	
+
 	newpwd1.addEventListener("keydown", function() {
 		if(newpwd1.value == "") {
 			new_pwd_strength.innerText = "";
@@ -32,7 +32,7 @@ window.addEventListener("load", function f() {
 		}
 		let res = zxcvbn(newpwd1.value);
 		new_pwd_strength.innerText = "Strength: " + res.score;
-	});	
+	});
 });
 
 
@@ -41,23 +41,23 @@ function changePassword(ev) {
 	let oldpwd_ = oldpwd.value;
 	let newpwd1_ = newpwd1.value;
 	let newpwd2_ = newpwd2.value;
-	
+
 	if(newpwd1_ != newpwd2_) {
 		alert("The new passwords are not corresponding");
 		return;
 	}
-	
+
 	let res = zxcvbn(newpwd1_);
 	if(res.score < 4) {
 	 alert("The new password is not strong enough");
 	 return;
 	}
-	
+
 	if(oldpwd_ == newpwd1_) {
 		alert("The old and the new passwords are the same");
 		return;
 	}
-	
+
  	let parameters = createFormData(
         [
 		{key:"oldpwd", value: oldpwd_},
@@ -78,6 +78,7 @@ function changePassword(ev) {
 		oldpwd.value = "";
 		newpwd1.value = "";
 		newpwd2.value = "";
+    new_pwd_strength.innertText = "";
 		return;
 	});
 }
@@ -88,7 +89,7 @@ function setUsername(responseText) {
         alert("Error requesting data.\nError message: " + response.body);
         return;
     }
-	
+
 	username.innerText = response.body.username;
 }
 
@@ -101,29 +102,29 @@ function populateBookDownload(responseText) {
         alert("Error requesting data.\nError message: " + response.body);
         return;
     }
-	
+
 	let listbook = response.body.bookList;
-	
+
 	clearTable(booklistdownload);
-	
+
 	for (var i = 0; i < listbook.length; ++i) {
 		var book = listbook[i];
-		var x = document.createElement("tr"); 
-		var t = document.createElement("td"); 
+		var x = document.createElement("tr");
+		var t = document.createElement("td");
 		var a = document.createElement("td");
 		var b = document.createElement("button");
-		
+
 		t.innerText = book.title;
 		a.innerText = book.author;
 		b.innerText = "Download";
 		b.setAttribute("idBook", book.id_book);
-		b.addEventListener("click", directDownload);		
+		b.addEventListener("click", directDownload);
 		x.appendChild(t);
 		x.appendChild(a);
 		x.appendChild(b);
-		
+
 		booklistdownload.appendChild(x)
-	}	
+	}
 }
 
 
