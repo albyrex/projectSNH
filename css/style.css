@@ -19,6 +19,6 @@ tr:nth-child(even) {
 	margin-right: 2px;
 }
 
-td:button {
+td button {
 	height: 100%;
 }
