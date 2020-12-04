@@ -113,6 +113,9 @@ function populateBookDownload(responseText) {
 		var t = document.createElement("td");
 		var a = document.createElement("td");
 		var b = document.createElement("button");
+    var b_td = document.createElement("td");
+    b_td.appendChild(b);
+
 
 		t.innerText = book.title;
 		a.innerText = book.author;
@@ -121,7 +124,7 @@ function populateBookDownload(responseText) {
 		b.addEventListener("click", directDownload);
 		x.appendChild(t);
 		x.appendChild(a);
-		x.appendChild(b);
+		x.appendChild(b_td);
 
 		booklistdownload.appendChild(x)
 	}
