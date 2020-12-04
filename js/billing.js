@@ -18,10 +18,10 @@ window.addEventListener("load", function f() {
 
 function result(responseText) {
     let response = JSON.parse(responseText);
-	if(response.errorCode == -400) {
-		alert("Bad Request");
-		return;
-	}
+		if(response.errorCode == -400) {
+			alert("Bad Request");
+			return;
+		}
 
 	let res = response.body.icanbuy;
 
@@ -44,7 +44,7 @@ function result(responseText) {
 }
 
 
-//da fare
+
 function pay(ev) {
 	ev.preventDefault();
 	let idBook = getParams("idBook");
