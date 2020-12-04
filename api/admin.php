@@ -56,13 +56,19 @@ function addBook() {
     //Check if the file is correctly uploaded
     if(!isset($_FILES["book"]["tmp_name"]) || $_FILES["book"]["tmp_name"] == "") {
         header("HTTP/1.0 400 Bad Request");
-        die("{\"errorCode\": -400, \"body\": \"Bad request\"}");
+        die("{\"errorCode\": -400, \"body\": \"Bad request: file not uploaded correctly\"}");
     }
 
-    // Check file size: max cover size = 512KiB, max book size = 128MiB
+    // Check file size: max book size = 128MiB
     if ($_FILES["book"]["size"] > 134217728) {
         header("HTTP/1.0 400 Bad Request");
         die("{\"errorCode\": -400, \"body\": \"Bad request: file too large\"}");
+    }
+
+    // Check file type
+    if(!isAValidPdf($_FILES["book"]["tmp_name"])) {
+        header("HTTP/1.0 400 Bad Request");
+        die("{\"errorCode\": -400, \"body\": \"Bad request: wrong file type\"}");
     }
 
     // Insert the new book in the database
@@ -93,7 +99,7 @@ function addBook() {
     }
     $r = $stmt->get_result();
     if($r->num_rows > 0) {
-        $row = $result->fetch_assoc();
+        $row = $r->fetch_assoc();
         $idBook = $row["id_book"];
         $conn->close();
     } else {
@@ -105,7 +111,7 @@ function addBook() {
     $targetFile = getBookPath($idBook);
 
     // Check if file already exists
-    if (file_exists($target_file)) {
+    if(file_exists($targetFile)) {
         header("HTTP/1.0 500 Internal Server Error");
         die("{\"errorCode\": -500, \"body\": \"Internal server error\"}");
     }
@@ -138,6 +144,19 @@ function removeBookById() {
     unlink($path);
 
     die("{\"errorCode\": 0, \"body\": \"Ok\"}");
+}
+
+
+/*
+  Utility functions
+*/
+function isAValidPdf($filepath) {
+    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+    $ret = false;
+    if(finfo_file($finfo, $filepath) === "application/pdf")
+        $ret = true;
+    finfo_close($finfo);
+    return $ret;
 }
 
 

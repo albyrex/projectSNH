@@ -57,7 +57,13 @@ function populateBookTopDownload(responseText) {
 
 		t.innerText = book.title;
 		a.innerText = book.author;
-		b.innerText = book.price  + "€" + " - Buy";
+
+        if(book.icanbuy == 0) { //gia comprato
+            b.innerText = "Download";
+        }else{ //non valido
+            b.innerText = book.price  + "€" + " - Buy";
+        }
+
 		b.setAttribute("idBook", book.id_book);
     b.setAttribute("icanbuy", book.icanbuy);
 		b.addEventListener("click", goToBilling);
@@ -72,15 +78,15 @@ function populateBookTopDownload(responseText) {
 function goToBilling(ev) {
 	ev.preventDefault();
 	let idBook = ev.target.getAttribute("idBook");
-  let icanbuy = ev.target.getAttribute("icanbuy");
+    let icanbuy = ev.target.getAttribute("icanbuy");
 
-  if(icanbuy == 0) { //gia comprato
+    if(icanbuy == 0) { //gia comprato
     window.location.href = "api/downloadBook.php?idBook=" + idBook;
-  }else if(icanbuy == 1) {  //ok devo comprare
+    }else if(icanbuy == 1) {  //ok devo comprare
     window.location.href = "./billing.html?idBook=" + idBook;
-  }else{ //non valido
+    }else{ //non valido
     window.location.href = "index.html";
-  }
+    }
 }
 
 
@@ -107,7 +113,13 @@ let response = JSON.parse(responseText);
 
 		t.innerText = book.title;
 		a.innerText = book.author;
-		b.innerText = book.price  + "€" + " - Buy";
+
+        if(book.icanbuy == 0) { //gia comprato
+            b.innerText = "Download";
+        }else{ //non valido
+            b.innerText = book.price  + "€" + " - Buy";
+        }
+
 		b.setAttribute("idBook", book.id_book);
     b.setAttribute("icanbuy", book.icanbuy);
 		b.addEventListener("click", goToBilling);

@@ -40,6 +40,9 @@ else {
 
 function topDownloaded() {
 	global $TOP_DOWNLOADED_SIZE;
+
+    $idUser = SessionManager::getIdUser();
+
     $result = new stdClass();
     $result->errorCode = 0;
     $result->body = new stdClass();
@@ -47,7 +50,10 @@ function topDownloaded() {
 
     $conn = getDbConnection();
     $r = $conn->query(
-        "SELECT b.id_book, title, author, price, COUNT(p.id_user) AS downloadCount
+        "SELECT b.id_book, title, author, price, IF((
+        	SELECT p2.id_user FROM payments p2 WHERE p2.id_book = b.id_book AND p2.id_user = $idUser
+        ) is NULL, 1, 0) AS icanbuy,
+        COUNT(p.id_user) AS downloadCount
         FROM books b LEFT OUTER JOIN payments p ON (b.id_book = p.id_book)
         GROUP BY b.id_book
         ORDER BY downloadCount DESC
@@ -141,6 +147,7 @@ function getUserBooks() {
 
 function searchByTitleOrAuthor() {
     $searchString = checkPostParameterOrDie("searchString");
+    $idUser = SessionManager::getIdUser();
 
     if(strlen($searchString) < 3) {
         header("HTTP/1.0 400 Bad Request");
@@ -160,12 +167,14 @@ function searchByTitleOrAuthor() {
 
     $conn = getDbConnection();
     $stmt = $conn->prepare(
-        "SELECT id_book, title, author, price
-        FROM books
+        "SELECT id_book, title, author, price, IF((
+        	SELECT p.id_user FROM payments p WHERE p.id_book = b.id_book AND p.id_user = ?
+        ) is NULL, 1, 0) AS icanbuy
+        FROM books b
         WHERE title LIKE ? OR author LIKE ?
         LIMIT 10"
     );
-    $stmt->bind_param("ss", $searchString, $searchString);
+    $stmt->bind_param("iss", $idUser, $searchString, $searchString);
     $success = $stmt->execute();
 
     if($success === false) {
@@ -187,12 +196,11 @@ function searchByTitleOrAuthor() {
   Utility Functions
 */
 function sanitizeBookRow($row) {
-    $book = new stdClass();
-    $book->id_book = $row->id_book;
-    $book->title = filterHtmlAndQuotes($row->title);
-    $book->author = filterHtmlAndQuotes($row->author);
-    $book->price = $row->price;
-    return $book;
+    $row->id_book = $row->id_book;
+    $row->title = filterHtmlAndQuotes($row->title);
+    $row->author = filterHtmlAndQuotes($row->author);
+    $row->price = $row->price;
+    return $row;
 }
 
 ?>
