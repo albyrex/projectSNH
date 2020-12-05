@@ -56,19 +56,19 @@ function addBook() {
     //Check if the file is correctly uploaded
     if(!isset($_FILES["book"]["tmp_name"]) || $_FILES["book"]["tmp_name"] == "") {
         header("HTTP/1.0 400 Bad Request");
-        die("{\"errorCode\": -400, \"body\": \"Bad request: file not uploaded correctly\"}");
+        die("Bad request: file not uploaded correctly");
     }
 
     // Check file size: max book size = 128MiB
     if ($_FILES["book"]["size"] > 134217728) {
         header("HTTP/1.0 400 Bad Request");
-        die("{\"errorCode\": -400, \"body\": \"Bad request: file too large\"}");
+        die("Bad request: file too large");
     }
 
     // Check file type
     if(!isAValidPdf($_FILES["book"]["tmp_name"])) {
         header("HTTP/1.0 400 Bad Request");
-        die("{\"errorCode\": -400, \"body\": \"Bad request: wrong file type\"}");
+        die("Bad request: wrong file type");
     }
 
     // Insert the new book in the database
@@ -82,7 +82,7 @@ function addBook() {
     $success = $stmt->execute();
     if($success === false) {
         header("HTTP/1.0 500 Internal Server Error");
-        die("{\"errorCode\": -500, \"body\": \"Internal server error\"}");
+        die("Internal server error");
     }
 
     // Retrive the new assigned index
@@ -95,7 +95,7 @@ function addBook() {
     $success = $stmt->execute();
     if($success === false) {
         header("HTTP/1.0 500 Internal Server Error");
-        die("{\"errorCode\": -500, \"body\": \"Internal server error\"}");
+        die("Internal server error");
     }
     $r = $stmt->get_result();
     if($r->num_rows > 0) {
@@ -105,7 +105,7 @@ function addBook() {
     } else {
         $conn->close();
         header("HTTP/1.0 500 Internal Server Error");
-        die("{\"errorCode\": -500, \"body\": \"Internal server error\"}");
+        die("Internal server error");
     }
 
     $targetFile = getBookPath($idBook);
@@ -113,11 +113,11 @@ function addBook() {
     // Check if file already exists
     if(file_exists($targetFile)) {
         header("HTTP/1.0 500 Internal Server Error");
-        die("{\"errorCode\": -500, \"body\": \"Internal server error\"}");
+        die("Internal server error");
     }
     move_uploaded_file($_FILES["book"]["tmp_name"], $targetFile);
 
-    die("{\"errorCode\": 0, \"body\": \"Ok\"}");
+    die("<html><body>Ok, book uploaded correctly. <a href='/index.php'>Homepage</a></body></html>");
 }
 
 function removeBookById() {

@@ -39,16 +39,6 @@ function checkGetNumericParameterOrDie($parName) {
 }
 
 /*
-  If $username contains at leats a character not in the whitelist \w, this
-  function return true.
-*/
-function invalidUsername($username) {
-    if($username === "")
-        return true;
-    return preg_match('/[^\w]/', $username);
-}
-
-/*
   If $email contains at leats a character not in the whitelist \w@., this
   function return true.
   true is also returned when
@@ -72,14 +62,14 @@ function invalidEmail($email) {
   Filter htmlentities but not ' nor "
 */
 function filterHtml($string) {
-    return htmlentities($string, ENT_NOQUOTES | ENT_SUBSTITUTE);
+    return htmlspecialchars($string, ENT_NOQUOTES | ENT_SUBSTITUTE);
 }
 
 /*
   Filter htmlentities including ' and "
 */
 function filterHtmlAndQuotes($string) {
-    return htmlentities($string, ENT_QUOTES | ENT_SUBSTITUTE);
+    return htmlspecialchars($string, ENT_QUOTES | ENT_SUBSTITUTE);
 }
 
 

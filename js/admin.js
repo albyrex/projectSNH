@@ -34,8 +34,8 @@ function populateBook(responseText) {
         var b_td = document.createElement("td");
         b_td.appendChild(b);
 
-        t.innerText = book.title;
-        a.innerText = book.author;
+        t.innerText = reverseHtmlSpecialChars(book.title);
+        a.innerText = reverseHtmlSpecialChars(book.author);
         p.innerText = book.price + "€";
         b.innerText = "Remove";
         b.setAttribute("idBook", book.id_book);
@@ -45,7 +45,7 @@ function populateBook(responseText) {
         x.appendChild(p);
         x.appendChild(b_td);
 
-        booklist.appendChild(x)
+        booklist.appendChild(x);
     }
 }
 
@@ -100,4 +100,26 @@ function clearTable(tab) {
         var lastchild = tab.children[tab.children.length - 1];
         tab.removeChild(lastchild);
     }
+}
+
+
+function reverseHtmlSpecialChars(text) {
+    var map = {
+        '&amp;': '&',
+        '&#038;': "&",
+        '&lt;': '<',
+        '&gt;': '>',
+        '&quot;': '"',
+        '&#039;': "'",
+        '&#8217;': "’",
+        '&#8216;': "‘",
+        '&#8211;': "–",
+        '&#8212;': "—",
+        '&#8230;': "…",
+        '&#8221;': '”'
+    };
+
+    return text.replace(/\&[\w\d\#]{2,5}\;/g, function(m) {
+        return map[m];
+    });
 }

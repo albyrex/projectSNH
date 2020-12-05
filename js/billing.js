@@ -26,6 +26,7 @@ function result(responseText) {
     let response = JSON.parse(responseText);
     if (response.errorCode == -400) {
         alert("Bad Request");
+        window.location.href = "index.php";
         return;
     }
 
@@ -40,8 +41,8 @@ function result(responseText) {
         let author_ = response.body.book.author;
 
         price.innerText = price_ + "€";
-        title.innerText = title_;
-        author.innerText = author_;
+        title.innerText = reverseHtmlSpecialChars(title_);
+        author.innerText = reverseHtmlSpecialChars(author_);
 
         button_pay.addEventListener("click", pay);
     } else { //non valido

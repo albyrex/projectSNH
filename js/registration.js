@@ -17,7 +17,6 @@ function registration(ev) {
     ev.preventDefault();
     let email_ = email.value;
     let password_ = password.value;
-    let username_ = username.value;
     let question1_ = question1.value;
     let question2_ = question2.value;
     let question3_ = question3.value;
@@ -39,10 +38,6 @@ function registration(ev) {
             {
                 key: "password",
                 value: password_
-            },
-            {
-                key: "username",
-                value: username_
             },
             {
                 key: "answers",

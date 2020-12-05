@@ -95,6 +95,7 @@ function setUsername(responseText) {
     let response = JSON.parse(responseText);
     if (response.errorCode < 0) {
         alert("Error requesting data.\nError message: " + response.body);
+        window.location.href = "index.php";
         return;
     }
 
@@ -106,6 +107,7 @@ function populateBookDownload(responseText) {
     let response = JSON.parse(responseText);
     if (response.errorCode < 0) {
         alert("Error requesting data.\nError message: " + response.body);
+        window.location.href = "index.php";
         return;
     }
 
@@ -123,8 +125,8 @@ function populateBookDownload(responseText) {
         b_td.appendChild(b);
 
 
-        t.innerText = book.title;
-        a.innerText = book.author;
+        t.innerText = reverseHtmlSpecialChars(book.title);
+        a.innerText = reverseHtmlSpecialChars(book.author);
         b.innerText = "Download";
         b.setAttribute("idBook", book.id_book);
         b.addEventListener("click", directDownload);
@@ -132,7 +134,7 @@ function populateBookDownload(responseText) {
         x.appendChild(a);
         x.appendChild(b_td);
 
-        booklistdownload.appendChild(x)
+        booklistdownload.appendChild(x);
     }
 }
 
@@ -155,4 +157,26 @@ function clearTable(tab) {
         var lastchild = tab.children[tab.children.length - 1];
         tab.removeChild(lastchild);
     }
+}
+
+
+function reverseHtmlSpecialChars(text) {
+    var map = {
+        '&amp;': '&',
+        '&#038;': "&",
+        '&lt;': '<',
+        '&gt;': '>',
+        '&quot;': '"',
+        '&#039;': "'",
+        '&#8217;': "’",
+        '&#8216;': "‘",
+        '&#8211;': "–",
+        '&#8212;': "—",
+        '&#8230;': "…",
+        '&#8221;': '”'
+    };
+
+    return text.replace(/\&[\w\d\#]{2,5}\;/g, function(m) {
+        return map[m];
+    });
 }
