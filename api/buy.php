@@ -11,7 +11,7 @@ include_once "utils.php";
 // Check if user is logged
 if(!SessionManager::isLogged()) {
     header("HTTP/1.0 400 Bad Request");
-    die("{\"errorCode\": -2, \"body\": \"User is not logged\"}");
+    die("{\"errorCode\": -400, \"body\": \"Bad request\"}");
 }
 
 

@@ -11,7 +11,7 @@ include_once "utils.php";
 
 if(!SessionManager::isLogged()) {
     header("HTTP/1.0 403 Forbidden");
-    die("{\"errorCode\": -4, \"body\": \"User is not logged\"}");
+    die("{\"errorCode\": -4, \"body\": \"Something went wrong\"}");
 }
 
 $oldpwd = checkPostParameterOrDie("oldpwd");

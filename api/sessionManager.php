@@ -78,7 +78,7 @@ class SessionManager {
 
         $conn = getDbConnection();
         $stmt = $conn->prepare("INSERT INTO users(email,password,answers) VALUES (?,?,?)");
-        $stmt->bind_param("ssss", $email, $hashedPassword, $answers);
+        $stmt->bind_param("sss", $email, $hashedPassword, $answers);
         $success = $stmt->execute();
         $conn->close();
         if($success === false) {

@@ -11,7 +11,8 @@ include_once "utils.php";
 
 // Check if the user is already logged
 if(!SessionManager::isLogged()) {
-    die("{\"errorCode\": -2, \"body\": \"User is not logged\"}");
+    header('HTTP/1.0 403 Forbidden');
+    die("Error 403: Forbidden");
 }
 
 // Check parameters

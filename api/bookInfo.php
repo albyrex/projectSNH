@@ -20,7 +20,7 @@ $SEARCH_RESULT_MAX_SIZE = 10;
 
 if(!SessionManager::isLogged()) {
     header("HTTP/1.0 403 Forbidden");
-    die("{\"errorCode\": -4, \"body\": \"User is not logged\"}");
+    die("{\"errorCode\": -400, \"body\": \"Bad request\"}");
 }
 
 $function = checkPostParameterOrDie("function");
@@ -151,7 +151,7 @@ function searchByTitleOrAuthor() {
 
     if(strlen($searchString) < 3) {
         header("HTTP/1.0 400 Bad Request");
-        die("{\"errorCode\": -400, \"body\": \"Bad request: too short search string\"}");
+        die("{\"errorCode\": -400, \"body\": \"Bad request\"}");
     }
 
     if(preg_match('/(%|__)/', $searchString)) {
