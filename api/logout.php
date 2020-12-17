@@ -9,14 +9,13 @@ include_once "sessionManager.php";
 
 // Check if the user is logged
 if(!SessionManager::isLogged()) {
-    die("{\"errorCode\": -2, \"body\": \"User is not logged\"}");
+    header("HTTP/1.0 400 Bad Request");
+    die("Bad Request: User is not logged");
 }
 
 SessionManager::closeSession();
 
-die("{\"errorCode\": 0, \"body\": \"Ok\"}");
-
-
-
+header("HTTP/1.0 307 Temporary Redirect");
+header("Location: ../login.php");
 
 ?>
