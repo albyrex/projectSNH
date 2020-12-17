@@ -97,6 +97,9 @@ function pay(ev) {
         } else if (response.errorCode == 0) {
             alert("Book bought correctly");
             window.location.href = "api/downloadBook.php?idBook=" + idBook;
+			setTimeout(function(){
+				window.location.href = "./home.php";
+			}, 1000);
             return;
         }
     });
