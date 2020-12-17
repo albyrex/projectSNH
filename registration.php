@@ -39,13 +39,13 @@ if(SessionManager::isLogged()) {
 	  <label for="password">PASSWORD</label><br>
 	  <input type="password" id="password" name="password"><span style="margin-left:10px" id="pwd_strength"></span><br><br>
 
-	  <label for="question1">QUESTION1</label><br>
+	  <label for="question1">What is the name of the person you gave the first kiss to?</label><br>
 	  <input type="text" id="question1" name="question1"><br><br>
 
-	  <label for="question2">QUESTION2</label><br>
+	  <label for="question2">What city did you visit on your first trip abroad?</label><br>
 	  <input type="text" id="question2" name="question2"><br><br>
 
-	  <label for="question3">QUESTION3</label><br>
+	  <label for="question3">What is your favorite movie?</label><br>
 	  <input type="text" id="question3" name="question3"><br><br>
 
 
