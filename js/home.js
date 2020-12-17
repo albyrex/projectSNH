@@ -9,13 +9,6 @@ window.addEventListener("load", function f() {
     );
     doAjaxPost("api/bookInfo.php", parameters, populateBookTopDownload);
 
-    doAjaxPost("api/userStatus.php", [], function(responseText) {
-        let response = JSON.parse(responseText);
-        let lout = document.createElement("a");
-        lout.innerText = "Logout";
-        lout.href = "javascript:logout()";
-        navbar.appendChild(lout);
-    });
 
     searchBook.addEventListener("change", function(ev) {
         let parameters = createFormData(
@@ -139,12 +132,6 @@ function clearTable(tab) {
     }
 }
 
-
-function logout() {
-    doAjaxPost("api/logout.php", [], function() {
-        window.location.href = "login.php";
-    });
-}
 
 
 function reverseHtmlSpecialChars(text) {

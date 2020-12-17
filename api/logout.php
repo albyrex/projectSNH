@@ -16,4 +16,7 @@ SessionManager::closeSession();
 
 die("{\"errorCode\": 0, \"body\": \"Ok\"}");
 
+
+
+
 ?>

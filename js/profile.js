@@ -10,14 +10,6 @@ window.addEventListener("load", function f() {
     );
     doAjaxPost("api/bookInfo.php", parameters, populateBookDownload);
 
-    doAjaxPost("api/userStatus.php", [], function(responseText) {
-        let response = JSON.parse(responseText);
-        let lout = document.createElement("a");
-        lout.innerText = "Logout";
-        lout.href = "javascript:logout()";
-        navbar.appendChild(lout);
-    });
-
     button_changepwd.addEventListener("click", changePassword);
 
     newpwd1.addEventListener("keydown", function() {
@@ -138,12 +130,6 @@ function directDownload(ev) {
     window.location.href = "api/downloadBook.php?idBook=" + idBook
 }
 
-
-function logout() {
-    doAjaxPost("api/logout.php", [], function() {
-        window.location.href = "login.php";
-    });
-}
 
 
 function clearTable(tab) {
