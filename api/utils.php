@@ -80,6 +80,7 @@ function filterHtmlAndQuotes($string) {
 */
 
 function getBookPath($idBook) {
+    include_once "dbAccess.php";
     $conn = getDbConnection();
     $stmt = $conn->prepare("SELECT id_book FROM books WHERE id_book=?");
     $stmt->bind_param("i", $idBook);
