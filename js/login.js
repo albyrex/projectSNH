@@ -30,9 +30,7 @@ function onOperationCompleted(responseText) {
     if (response.errorCode == 0) {
         if (response.body == 0) {
             window.location.replace("index.php");
-        } else if (response.body == 1) {
-            window.location.replace("admin.html");
-        }
+		}
     } else if (response.errorCode == -2) {
         alert("User already logged, please logout if you want to login again");
     } else if (response.errorCode == -400) { //mancano parametri

@@ -30,10 +30,7 @@ if($result === $userNotFound || $result === $wrongPassword) {
     header("HTTP/1.0 400 Bad Request");
     die("{\"errorCode\": -4, \"body\": \"Something went wrong\"}");
 } else if($result === $operationSuccessful) {
-    if(SessionManager::isAdmin())
-        die("{\"errorCode\": 0, \"body\": 1}");  // Controllare!!!
-    else
-        die("{\"errorCode\": 0, \"body\": 0}");  // Controllare!!!
+    die("{\"errorCode\": 0, \"body\": 0}");  // Controllare!!!
 }
 
 die("{\"errorCode\": -1, \"body\": \"General error\"}");
