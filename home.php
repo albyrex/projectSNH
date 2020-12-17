@@ -29,6 +29,7 @@ if(!SessionManager::isLogged()) {
 	<div id="navbar">
 		<a href="index.php">Home</a>
 		<a href="profile.php">Profile</a>
+		<a href="api/logout.php">Logout</a>
 	</div>
 	<br><br><br><br>
 	<div>

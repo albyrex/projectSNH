@@ -43,6 +43,7 @@ if (SessionManager::userCanDownload(SessionManager::getIdUser(), $idBook) ) {
 	<div id="navbar">
 		<a href="index.php">Home</a>
 		<a href="profile.php">Profile</a>
+		<a href="api/logout.php">Logout</a>
 	</div>
 	<br><br><br><br>
   <h3>You are buying:</h3>
