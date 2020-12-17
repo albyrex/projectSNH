@@ -5,7 +5,6 @@
   A user session is composed by:
    - id_user
    - email
-   - admin (admin flag)
 */
 
 if(session_status() == PHP_SESSION_NONE) {
@@ -32,12 +31,6 @@ class SessionManager {
 
     public static function isLogged() {
         return isset($_SESSION["id_user"]);
-    }
-
-    public static function isAdmin() {
-        if(!isset($_SESSION["admin"]))
-            return false;
-        return $_SESSION["admin"] === 1;
     }
 
     public static function hashPassword($password) {
@@ -273,7 +266,6 @@ class SessionManager {
         }
         $_SESSION["id_user"] = (int)$row["id_user"];
         $_SESSION["email"] = $row["email"];
-        $_SESSION["admin"] = (int)$row["admin"];
         return $operationSuccessful;
     }
 
