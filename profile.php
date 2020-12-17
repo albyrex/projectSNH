@@ -21,6 +21,7 @@ if(!SessionManager::isLogged()) {
 	<script type="application/javascript" src="./js/profile.js"></script>
 	<script type="application/javascript" src="./js/zxcvbn.js"></script>
 	<link rel="stylesheet" href="css/style.css">
+	<link rel="icon" type="image/png" href="icon.png">
 	<title>PROFILE</title>
 </head>
 

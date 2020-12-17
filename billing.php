@@ -34,6 +34,7 @@ if (SessionManager::userCanDownload(SessionManager::getIdUser(), $idBook) ) {
     <script type="application/javascript" src="./js/ajax.js"></script>
 	<script type="application/javascript" src="./js/billing.js"></script>
 	<link rel="stylesheet" href="css/style.css">
+	<link rel="icon" type="image/png" href="icon.png">
 	<title>BILLING</title>
 </head>
 
