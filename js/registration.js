@@ -54,7 +54,7 @@ function onOperationCompleted(responseText) {
     let response = JSON.parse(responseText);
     if (response.errorCode == 0 || response.errorCode == -2) {
         alert("User registration succeded");
-        window.location.replace("login.html");
+        window.location.replace("login.php");
     } else if (response.errorCode == -400) {
         alert("Error: missing parameters");
     } else if (response.errorCode == -4) {

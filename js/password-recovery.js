@@ -37,5 +37,5 @@ function onOperationCompleted(responseText) {
         return;
     }
     alert("You request has been sent correctly. Check your email inbox.");
-    window.location.href = "login.html";
+    window.location.href = "login.php";
 }

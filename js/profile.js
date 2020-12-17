@@ -147,7 +147,7 @@ function directDownload(ev) {
 
 function logout() {
     doAjaxPost("api/logout.php", [], function() {
-        window.location.href = "login.html";
+        window.location.href = "login.php";
     });
 }
 

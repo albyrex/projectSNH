@@ -102,7 +102,7 @@ if($operationResult !== $operationSuccessful) {
 	<script type="application/javascript">
 		window.addEventListener("load", function() {
 			alert("Password changed correctly! You will be redirected to the login page.");
-			window.location.href = "login.html";
+			window.location.href = "login.php";
 		});
 	</script>
 </head>

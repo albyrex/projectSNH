@@ -38,7 +38,7 @@ if($operationResult !== $operationSuccessful) {
                 countdown.innerText = sec;
                 if(sec <= 0) {
                     clearInterval(interval);
-                    window.location.href = "../login.html";
+                    window.location.href = "../login.php";
                 }
                 sec--;
             }, 1000);

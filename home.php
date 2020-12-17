@@ -1,3 +1,16 @@
+<?php
+include_once "api/sessionManager.php";
+include_once "api/utils.php";
+
+if(!SessionManager::isLogged()) {
+	header("HTTP/1.0 307 Temporary Redirect");
+    header("Location: ./login.php");
+	die();
+}
+
+
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -14,7 +27,7 @@
 	<h1>HOME</h1><br><br>
 	<div id="navbar">
 		<a href="index.php">Home</a>
-		<a href="profile.html">Profile</a>
+		<a href="profile.php">Profile</a>
 	</div>
 	<br><br><br><br>
 	<div>

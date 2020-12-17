@@ -6,9 +6,9 @@ include_once "./api/sessionManager.php";
 header("HTTP/1.0 307 Temporary Redirect");
 
 if(SessionManager::isLogged()) {
-    header("Location: ./home.html");
+    header("Location: ./home.php");
 } else {
-    header("Location: ./login.html");
+    header("Location: ./login.php");
 }
 
 ?>

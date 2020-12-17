@@ -92,7 +92,7 @@ function pay(ev) {
             return;
         } else if (response.errorCode == 1) {
             alert("Book already bought");
-            window.location.href = "profile.html";
+            window.location.href = "profile.php";
             return;
         } else if (response.errorCode == 0) {
             alert("Book bought correctly");

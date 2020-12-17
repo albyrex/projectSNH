@@ -89,7 +89,7 @@ function goToBilling(ev) {
     if (icanbuy == 0) { //gia comprato
         window.location.href = "api/downloadBook.php?idBook=" + idBook;
     } else if (icanbuy == 1) { //ok devo comprare
-        window.location.href = "./billing.html?idBook=" + idBook;
+        window.location.href = "./billing.php?idBook=" + idBook;
     } else { //non valido
         window.location.href = "index.php";
     }
@@ -148,7 +148,7 @@ function clearTable(tab) {
 
 function logout() {
     doAjaxPost("api/logout.php", [], function() {
-        window.location.href = "login.html";
+        window.location.href = "login.php";
     });
 }
 

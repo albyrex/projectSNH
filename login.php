@@ -1,3 +1,17 @@
+<?php
+include_once "api/sessionManager.php";
+include_once "api/utils.php";
+
+if(SessionManager::isLogged()) {
+	header("HTTP/1.0 307 Temporary Redirect");
+    header("Location: ./home.php");
+	die();
+}
+
+
+?>
+
+
 <!DOCTYPE html>
 <html>
 
@@ -13,8 +27,8 @@
 <body>
 	<h1>LOGIN</h1>
 	<div id="navbar">
-		<a href="login.html">Login</a>
-		<a href="registration.html">Registration</a>
+		<a href="login.php">Login</a>
+		<a href="registration.php">Registration</a>
 	</div>
 	<br><br><br><br>
     <form>
@@ -28,7 +42,7 @@
 	  <button id="button_login">LOGIN</button>
 
 	  <br><br>
-	  <a href="password-recovery.html">Forgot Password?</a>
+	  <a href="password-recovery.php">Forgot Password?</a>
 	</form>
 	<div style="margin-top: 30px">
 		<p>In case of consecutive login errors, you must wait 10 minutes before try again</p>

@@ -1,3 +1,30 @@
+<?php
+include_once "api/sessionManager.php";
+include_once "api/utils.php";
+
+if(!SessionManager::isLogged()) {
+	header("HTTP/1.0 307 Temporary Redirect");
+    header("Location: ./login.php");
+	die();
+}
+
+$idBook = checkGetNumericParameterOrDie("idBook");
+$path = getBookPath($idBook);
+if ($path === -1) {
+	header("HTTP/1.0 404 Bad Request");
+	die("Bad Request");
+}
+
+# true: user cannot buy but can download already
+# false: user has to buy
+if (SessionManager::userCanDownload(SessionManager::getIdUser(), $idBook) ) {
+	header("HTTP/1.0 307 Temporary Redirect");
+    header("Location: api/downloadBook.php?idBook=$idBook");
+	die();
+}
+
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -14,7 +41,7 @@
 	<h1>BILLING</h1>
 	<div id="navbar">
 		<a href="index.php">Home</a>
-		<a href="profile.html">Profile</a>
+		<a href="profile.php">Profile</a>
 	</div>
 	<br><br><br><br>
   <h3>You are buying:</h3>
