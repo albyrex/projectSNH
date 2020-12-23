@@ -33,15 +33,15 @@ class SessionManager {
         return isset($_SESSION["id_user"]);
     }
 
-    public static function hashPassword($password) {
+    private static function hashBcrypt($password) {
         $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
         if($hashedPassword == false)
             return "invalid hash";
         else
             return $hashedPassword;
     }
-
-    public static function getIdUser() {
+		
+	public static function getIdUser() {
         return $_SESSION["id_user"];
     }
 
@@ -67,11 +67,28 @@ class SessionManager {
 
 		include_once "dbAccess.php";
 
-        $hashedPassword = SessionManager::hashPassword($password);
+        $hashedPassword = SessionManager::hashBcrypt($password);
 
         $conn = getDbConnection();
+		
+		$stmt = $conn->prepare("SELECT id_user FROM users WHERE email = ?");
+        $stmt->bind_param("s", $email);
+        $success = $stmt->execute();
+        if($success === false) {
+            return -1;
+        }
+		$result = $stmt->get_result();
+        if($result->num_rows > 0) {
+            if(SessionManager::sendAlertEmail($email)) 
+				return $operationSuccessful;
+			else
+            	return -1;
+        }
+				
+		$hashedAnswers = SessionManager::hashBcrypt($answers);
+		
         $stmt = $conn->prepare("INSERT INTO users(email,password,answers) VALUES (?,?,?)");
-        $stmt->bind_param("sss", $email, $hashedPassword, $answers);
+        $stmt->bind_param("sss", $email, $hashedPassword, $hashedAnswers);
         $success = $stmt->execute();
         $conn->close();
         if($success === false) {
@@ -150,7 +167,7 @@ class SessionManager {
         $stmt = $conn->prepare(
             "UPDATE users SET password = ? WHERE id_user = ?"
         );
-		$newHashedPassword = SessionManager::hashPassword($newpwd);
+		$newHashedPassword = SessionManager::hashBcrypt($newpwd);
 		$stmt->bind_param("si", $newHashedPassword, $idUser);
         $stmt->execute();
         $conn->close();
@@ -193,7 +210,7 @@ class SessionManager {
         $stmt = $conn->prepare(
             "UPDATE users SET password = ? WHERE email = ?"
         );
-        $hashedPassword = SessionManager::hashPassword($newpwd);
+        $hashedPassword = SessionManager::hashBcrypt($newpwd);
         $stmt->bind_param("ss", $hashedPassword, $email);
         $stmt->execute();
 
@@ -362,9 +379,9 @@ class SessionManager {
         // Retrive the user from the database
         $conn = getDbConnection();
         $stmt = $conn->prepare(
-            "SELECT id_user FROM users WHERE email = ? AND answers = ?"
+            "SELECT id_user, answers FROM users WHERE email = ?"
         );
-        $stmt->bind_param("ss", $email, $answers);
+        $stmt->bind_param("s", $email);
         $stmt->execute();
 
         // Check if it really exists
@@ -372,10 +389,17 @@ class SessionManager {
         if($result->num_rows > 0) {
             $row = $result->fetch_assoc();
             $idUser = $row["id_user"];
+			$hashedAnswers = $row["answers"];
         } else {
             $conn->close();
             return $userNotFound;
         }
+		
+		// Check if the aswers are correct
+		if(!password_verify($answers, $hashedAnswers)) {
+			$conn->close();
+            return $genericError;	
+		}
 
         // Check if a valid password recovery request is already present
         $stmt = $conn->prepare(
@@ -481,6 +505,30 @@ class SessionManager {
             $mail->addAddress($email);
             $mail->Subject = "Password recovery request for bookshop account";
             $mail->Body = "You can reset your password clicking on the following link: $url";
+            $mail->IsSMTP();
+            $mail->SMTPSecure = "ssl";
+            $mail->Host = "ssl://smtp.gmail.com";
+            $mail->SMTPAuth = true;
+            $mail->Port = 465;
+            $mail->Username = "ebookunipi@gmail.com";
+            $mail->Password = "phpmailertest*";
+            $mail->send();
+            return true;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+	
+	private static function sendAlertEmail($email) {
+        require "./lib/PHPMailer/PHPMailer.php";
+        require "./lib/PHPMailer/SMTP.php";
+
+        try {
+            $mail = new PHPMailer\PHPMailer\PHPMailer;
+            $mail->setFrom("noreply@bookshop.com");
+            $mail->addAddress($email);
+            $mail->Subject = "Alert email";
+            $mail->Body = "Someone tried to register a new user account on bookshop with your email, but you already have an account";
             $mail->IsSMTP();
             $mail->SMTPSecure = "ssl";
             $mail->Host = "ssl://smtp.gmail.com";
