@@ -155,7 +155,8 @@ class SessionManager {
 
         // Check if the old password is wrong
         if(!password_verify($oldpwd, $row["password"])) {
-            SessionManager::updatePasswordChangeInfo($conn,$idUser,$cfpg+1,$now);
+			$cfpg = $cfpg >= 100 ? 100 : $cfpg + 1;
+            SessionManager::updatePasswordChangeInfo($conn,$idUser,$cfpg,$now);
             $conn->close();
             return $wrongPassword;
         }
@@ -229,6 +230,7 @@ class SessionManager {
         global $userNotFound, $wrongPassword, $operationSuccessful;
         global $userUnderBruteforceProtection, $maxConsecutiveFailedLoginCount;
         global $emailNotVerified;
+		global $loginBruteforceProtectionInterval;
 
         include_once "dbAccess.php";
 
@@ -262,14 +264,16 @@ class SessionManager {
             $failedLoginTimestamp !== 0 &&
             $failedLoginTimestamp + $loginBruteforceProtectionInterval > $now
         ) {
-            SessionManager::updateDbLoginInfo($conn, $email, $consecutiveFailedLoginCount+1, $now);
+			$consecutiveFailedLoginCount = $consecutiveFailedLoginCount >= 100 ? 100 : $consecutiveFailedLoginCount + 1;
+            SessionManager::updateDbLoginInfo($conn, $email, $consecutiveFailedLoginCount, $now);
             $conn->close();
             return $userUnderBruteforceProtection;
         }
 
         // Check if the password is wrong
         if(!password_verify($password, $row["password"])) {
-            SessionManager::updateDbLoginInfo($conn, $email, $consecutiveFailedLoginCount+1, $now);
+			$consecutiveFailedLoginCount = $consecutiveFailedLoginCount >= 100 ? 100 : $consecutiveFailedLoginCount + 1;
+            SessionManager::updateDbLoginInfo($conn, $email, $consecutiveFailedLoginCount, $now);
             $conn->close();
             return $wrongPassword;
         }

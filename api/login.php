@@ -26,11 +26,12 @@ $password = checkPostParameterOrDie("password");
 
 $result = SessionManager::sessionStart($email, $password);
 
-if($result === $userNotFound || $result === $wrongPassword) {
+
+if($result === $operationSuccessful) {
+    die("{\"errorCode\": 0, \"body\": 0}");
+} else {
     header("HTTP/1.0 400 Bad Request");
     die("{\"errorCode\": -4, \"body\": \"Something went wrong\"}");
-} else if($result === $operationSuccessful) {
-    die("{\"errorCode\": 0, \"body\": 0}");  // Controllare!!!
 }
 
 die("{\"errorCode\": -1, \"body\": \"General error\"}");
