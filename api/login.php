@@ -6,8 +6,7 @@
     -  0 -> No errors
     - -1 -> Generic error (should never be returned)
     - -2 -> User is already logged
-    - -3 -> Missing parameters
-    - -4 -> Non valid parameters
+    - -4 -> Something went wrong
 */
 
 include_once "sessionManager.php";

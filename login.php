@@ -46,7 +46,7 @@ if(SessionManager::isLogged()) {
 	  <a href="password-recovery.php">Forgot Password?</a>
 	</form>
 	<div style="margin-top: 30px">
-		<p>In case of consecutive login errors, you must wait 10 minutes before try again</p>
+		<p>User could be suspended if multiple login failures occurred</p>
 	</div>
 </body>
 
