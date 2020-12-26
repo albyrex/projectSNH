@@ -5,6 +5,11 @@ function getParams(param) {
 
 window.addEventListener("load", function f() {
     let idBook = getParams("idBook");
+	if(isNaN(idBook)) {
+		alert("idBook not valid");
+		window.location.href = "index.php";
+		return;
+	}
     let parameters = createFormData(
         [
             {
@@ -33,6 +38,11 @@ function result(responseText) {
     let res = response.body.icanbuy;
 
     let idBook = getParams("idBook");
+	if(isNaN(idBook)) {
+		alert("idBook not valid");
+		window.location.href = "index.php";
+		return;
+	}
     if (res == 0) { //gia comprato
         window.location.href = "api/downloadBook.php?idBook=" + idBook;
     } else if (res == 1) { //ok lo posso comprare
@@ -55,6 +65,11 @@ function result(responseText) {
 function pay(ev) {
     ev.preventDefault();
     let idBook = getParams("idBook");
+	if(isNaN(idBook)) {
+		alert("idBook not valid");
+		window.location.href = "index.php";
+		return;
+	}
     let parameters = createFormData(
         [
             {
