@@ -30,6 +30,11 @@ if($bookPath === -1) {
     die("Error 403: Forbidden");
 }
 
+if(!file_exists($bookPath)) {
+    header("HTTP/1.0 500 Internal Server Error");
+    die("Error 500: Internal Server Error");
+}
+
 header("Content-type:application/pdf");
 header("Content-Disposition:attachment;filename=book.pdf");
 readfile($bookPath);

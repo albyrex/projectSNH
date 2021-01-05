@@ -93,7 +93,7 @@ function getBookPath($idBook) {
     if($result->num_rows > 0) {
         $row = $result->fetch_assoc();
         $conn->close();
-        return "../pdfs/" . $row["id_book"] . ".pdf";
+        return "../../pdfs/" . $row["id_book"] . ".pdf";
     } else {
         $conn->close();
         return -1;
