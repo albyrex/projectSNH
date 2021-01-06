@@ -37,8 +37,6 @@ if(!SessionManager::isLogged()) {
   <h3>Your books</h3>
 	<div style="vertical-align: top">
 		<div style="display:inline-block; margin-bottom: 50px;min-width: 600px;vertical-align: top">
-			<input type="text" id="search" placeholder="search by title or author">
-			<br>
 			<table id="booklistdownload" style="width:500px; border: 1px solid black;">
 					<tr>
 				<th>Title</th>
