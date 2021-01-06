@@ -12,6 +12,8 @@ if(session_status() == PHP_SESSION_NONE) {
 }
 
 
+$hostName = "randomware.test";
+
 $userNotFound = -1;
 $wrongPassword = -2;
 $operationSuccessful = 0;
@@ -40,7 +42,7 @@ class SessionManager {
         else
             return $hashedPassword;
     }
-		
+
 	public static function getIdUser() {
         return $_SESSION["id_user"];
     }
@@ -70,7 +72,7 @@ class SessionManager {
         $hashedPassword = SessionManager::hashBcrypt($password);
 
         $conn = getDbConnection();
-		
+
 		$stmt = $conn->prepare("SELECT id_user FROM users WHERE email = ?");
         $stmt->bind_param("s", $email);
         $success = $stmt->execute();
@@ -79,14 +81,14 @@ class SessionManager {
         }
 		$result = $stmt->get_result();
         if($result->num_rows > 0) {
-            if(SessionManager::sendAlertEmail($email)) 
+            if(SessionManager::sendAlertEmail($email))
 				return $operationSuccessful;
 			else
             	return -1;
         }
-				
+
 		$hashedAnswers = SessionManager::hashBcrypt($answers);
-		
+
         $stmt = $conn->prepare("INSERT INTO users(email,password,answers) VALUES (?,?,?)");
         $stmt->bind_param("sss", $email, $hashedPassword, $hashedAnswers);
         $success = $stmt->execute();
@@ -398,11 +400,11 @@ class SessionManager {
             $conn->close();
             return $userNotFound;
         }
-		
+
 		// Check if the aswers are correct
 		if(!password_verify($answers, $hashedAnswers)) {
 			$conn->close();
-            return $genericError;	
+            return $genericError;
 		}
 
         // Check if a valid password recovery request is already present
@@ -460,6 +462,8 @@ class SessionManager {
     }
 
     private static function sendVerificationEmail($email) {
+        global $hostName;
+
         include_once "dbAccess.php";
         require "./lib/PHPMailer/PHPMailer.php";
         require "./lib/PHPMailer/SMTP.php";
@@ -477,7 +481,7 @@ class SessionManager {
         $conn->close();
 
         // Prepare and send the email
-        $verificationUrl = "https://localhost/api/verifyEmail.php?token=$token&email=$email";
+        $verificationUrl = "https://$hostName/api/verifyEmail.php?token=$token&email=$email";
         try {
             $mail = new PHPMailer\PHPMailer\PHPMailer;
             $mail->setFrom("noreply@bookshop.com");
@@ -502,7 +506,7 @@ class SessionManager {
         require "./lib/PHPMailer/PHPMailer.php";
         require "./lib/PHPMailer/SMTP.php";
 
-        $url = "https://localhost/newpassword.php?token=$token&email=$email";
+        $url = "https://$hostName/newpassword.php?token=$token&email=$email";
         try {
             $mail = new PHPMailer\PHPMailer\PHPMailer;
             $mail->setFrom("noreply@bookshop.com");
@@ -522,7 +526,7 @@ class SessionManager {
             return false;
         }
     }
-	
+
 	private static function sendAlertEmail($email) {
         require "./lib/PHPMailer/PHPMailer.php";
         require "./lib/PHPMailer/SMTP.php";
