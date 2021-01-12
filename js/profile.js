@@ -22,9 +22,13 @@ window.addEventListener("load", function f() {
 		var s = "";
 		sugg.innerHTML = "";
 		for(var i in res.feedback.suggestions) {
-			s += res.feedback.suggestions[i]+ "\n";
+			s = res.feedback.suggestions[i];
+			g = document.createTextNode(s);
+			br = document.createElement("br");
+			sugg.appendChild(br);
+			sugg.appendChild(g);
 		}
-		sugg.innerText = s;
+		//sugg.innerText = s;
 		
     });
 });
