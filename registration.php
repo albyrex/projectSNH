@@ -37,7 +37,8 @@ if(SessionManager::isLogged()) {
 	  <input type="email" id="email" name="email"><br><br>
 
 	  <label for="password">PASSWORD</label><br>
-	  <input type="password" id="password" name="password"><span style="margin-left:10px" id="pwd_strength"></span><br><br>
+	  <input type="password" id="password" name="password"><span style="margin-left:10px" id="pwd_strength"></span><br>
+		<div id="sugg"></div><br>
 
 	  <label for="question1">What is the name of the person you gave the first kiss to?</label><br>
 	  <input type="text" id="question1" name="question1"><br><br>

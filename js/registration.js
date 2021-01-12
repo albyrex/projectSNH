@@ -8,7 +8,13 @@ window.addEventListener("load", function f() {
         }
         let res = zxcvbn(password.value, [email.value]);
         pwd_strength.innerText = "Strength: " + res.score;
-    });
+    	var s = "";
+		for(var i in res.feedback.suggestions) {
+			s += res.feedback.suggestions[i]+ "\n";
+		}
+		
+		sugg.innerText = s;
+	});
 });
 
 
