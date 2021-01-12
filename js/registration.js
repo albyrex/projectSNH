@@ -6,7 +6,7 @@ window.addEventListener("load", function f() {
             pwd_strength.innerText = "";
             return;
         }
-        let res = zxcvbn(password.value);
+        let res = zxcvbn(password.value, [email.value]);
         pwd_strength.innerText = "Strength: " + res.score;
     });
 });
@@ -21,11 +21,20 @@ function registration(ev) {
     let question2_ = question2.value;
     let question3_ = question3.value;
 
+	if (question1_ == "" || question2_ == "" ||question3_ == "" ){
+		alert("Insert some security answer");
+		return;
+	}
+	
     let answers_ = JSON.stringify([question1_, question2_, question3_]);
 
-    let res = zxcvbn(password_);
+    let res = zxcvbn(password_, [email_]);
     if (res.score < 4) {
-        alert("The chosen password is to weak");
+		var s = "";
+		for(var i in res.feedback.suggestions) {
+			s += res.feedback.suggestions[i]+ "\n";
+		}
+        alert(s);
         return;
     }
 
