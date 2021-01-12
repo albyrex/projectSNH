@@ -54,7 +54,7 @@ if(!isset($_POST["newpwd1"]) || $_POST["newpwd1"] == "") {
 				let res = zxcvbn(newpwd1.value, [email_]);
 				if(res.score < 4) {
 					ev.preventDefault();
-					var s = "";
+					var s = "Password is too weak!\n";
 					for(var i in res.feedback.suggestions) {
 						s += res.feedback.suggestions[i] +"\n";
 					}
