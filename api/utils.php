@@ -111,7 +111,7 @@ function parseAnswers($answers) {
     }
     $arr = array();
     for ($i = 0; $i < 3; $i++) {
-    	if(!is_string($obj[$i])) {
+    	if(!is_string($obj[$i]) || (string)$obj[$i] === "") {
             header("HTTP/1.0 400 Bad Request");
             die("{\"errorCode\": -400, \"body\": \"Bad request\"}");
         }
