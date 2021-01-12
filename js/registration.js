@@ -9,11 +9,14 @@ window.addEventListener("load", function f() {
         let res = zxcvbn(password.value, [email.value]);
         pwd_strength.innerText = "Strength: " + res.score;
     	var s = "";
+		sugg.innerHTML = "";
 		for(var i in res.feedback.suggestions) {
-			s += res.feedback.suggestions[i]+ "\n";
+			s = res.feedback.suggestions[i]+ "\n";
+			g = document.createTextNode(s);
+			sugg.appendChild(g);
 		}
 		
-		sugg.innerText = s;
+		//sugg.innerText = s;
 	});
 });
 

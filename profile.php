@@ -54,6 +54,7 @@ if(!SessionManager::isLogged()) {
 				<button id="button_changepwd">Change</button>
 			</form>
             <p>If you fail too much attempts, you must wait 10 minutes before try again</p>
+			<div id = "sugg"></div>
 		</div>
 	</div>
 

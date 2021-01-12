@@ -17,8 +17,15 @@ window.addEventListener("load", function f() {
             new_pwd_strength.innerText = "";
             return;
         }
-        let res = zxcvbn(newpwd1.value);
-        new_pwd_strength.innerText = "Strength: " + res.score;
+        let res = zxcvbn(newpwd1.value, [oldpwd.value, username.innerText]);
+        new_pwd_strength.innerText = "Strength: " + res.score;		
+		var s = "";
+		sugg.innerHTML = "";
+		for(var i in res.feedback.suggestions) {
+			s += res.feedback.suggestions[i]+ "\n";
+		}
+		sugg.innerText = s;
+		
     });
 });
 
