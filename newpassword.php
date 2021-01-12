@@ -34,14 +34,25 @@ if(!isset($_POST["newpwd1"]) || $_POST["newpwd1"] == "") {
 	<script type="application/javascript">
 		window.addEventListener("load", function() {
 			newpwd1.addEventListener("keydown", function() {
-				let res = zxcvbn(newpwd1.value);
+				let email_ = "<?php echo $email; ?>";
+				let res = zxcvbn(newpwd1.value, [email_]);
 				pwd_strength.innerText = "Strength: " + res.score;
 			});
 			submit_pwd_recovery.onclick = function(ev) {
-				let res = zxcvbn(newpwd1.value);
+				let email_ = "<?php echo $email; ?>";
+				let res = zxcvbn(newpwd1.value, [email_]);
 				if(res.score < 4) {
-					alert("The password is too weak");
 					ev.preventDefault();
+					var s = "";
+					sugg.innerHTML = "";
+					for(var i in res.feedback.suggestions) {
+						s = res.feedback.suggestions[i];
+						g = document.createTextNode(s);
+						br = document.createElement("br");
+						sugg.appendChild(br);
+						sugg.appendChild(g);
+					}
+					alert(sugg.innerHTML);
 				}
 			}
 		});
@@ -60,6 +71,7 @@ if(!isset($_POST["newpwd1"]) || $_POST["newpwd1"] == "") {
 		<input type="text" style="display:none" name="token" value="<?php echo $token; ?>">
 		<input type="text" style="display:none" name="email" value="<?php echo $email; ?>">
 	</form>
+	<div id="sugg"></div>
 </body>
 
 </html>
