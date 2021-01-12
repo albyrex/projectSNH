@@ -37,6 +37,18 @@ if(!isset($_POST["newpwd1"]) || $_POST["newpwd1"] == "") {
 				let email_ = "<?php echo $email; ?>";
 				let res = zxcvbn(newpwd1.value, [email_]);
 				pwd_strength.innerText = "Strength: " + res.score;
+				if(res.score < 4) {
+					ev.preventDefault();
+					var s = "";
+					sugg.innerHTML = "";
+					for(var i in res.feedback.suggestions) {
+						s = res.feedback.suggestions[i];
+						g = document.createTextNode(s);
+						br = document.createElement("br");
+						sugg.appendChild(br);
+						sugg.appendChild(g);
+					}
+				}
 			});
 			submit_pwd_recovery.onclick = function(ev) {
 				let email_ = "<?php echo $email; ?>";
