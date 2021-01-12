@@ -503,6 +503,8 @@ class SessionManager {
     }
 
     private static function sendPasswordRecoveryRequestEmail($email, $token) {
+        global $hostName;
+
         require "./lib/PHPMailer/PHPMailer.php";
         require "./lib/PHPMailer/SMTP.php";
 
