@@ -32,8 +32,8 @@ function registration(ev) {
     let question2_ = question2.value;
     let question3_ = question3.value;
 
-	if (question1_ == "" || question2_ == "" ||question3_ == "" ){
-		alert("Insert some security answer");
+	if (question1_ == "" || question2_ == "" || question3_ == "" ){
+		alert("Insert all security answers");
 		return;
 	}
 	
