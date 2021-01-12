@@ -55,15 +55,10 @@ if(!isset($_POST["newpwd1"]) || $_POST["newpwd1"] == "") {
 				if(res.score < 4) {
 					ev.preventDefault();
 					var s = "";
-					sugg.innerHTML = "";
 					for(var i in res.feedback.suggestions) {
-						s = res.feedback.suggestions[i];
-						g = document.createTextNode(s);
-						br = document.createElement("br");
-						sugg.appendChild(br);
-						sugg.appendChild(g);
+						s += res.feedback.suggestions[i];
 					}
-					alert(sugg.innerHTML);
+					alert(s);
 				}
 			}
 		});
