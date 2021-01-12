@@ -56,7 +56,7 @@ if(!isset($_POST["newpwd1"]) || $_POST["newpwd1"] == "") {
 					ev.preventDefault();
 					var s = "";
 					for(var i in res.feedback.suggestions) {
-						s += res.feedback.suggestions[i];
+						s += res.feedback.suggestions[i] +"\n";
 					}
 					alert(s);
 				}
